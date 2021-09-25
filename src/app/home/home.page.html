@@ -1,20 +1,37 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div>
+    <br>
+    <br>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <div>
+      <img [src]="'assets/images/logo.png'">
+    </div>
+
+    <br>
+    <br>
+
+    <div class="title">
+      <h4>222</h4>
+      <ion-label [translate]="'geo-quiz'"></ion-label>
+    </div>
+
+    <br>
+
+    <div class="languages">
+      <ion-img *ngFor="let item of languages"
+               (click)="setLanguage(item.key)"
+               [ngClass]="{selectedLanguage: selectedLanguage === item.key}"
+               [src]="item.imgUrl"></ion-img>
+    </div>
+
+    <br>
+    <br>
+
+    <div>
+      <ion-button (click)="goToBoard()"
+                  color="light"
+                  size="large"
+                  [translate]="'start'"></ion-button>
+    </div>
   </div>
 </ion-content>
