@@ -1,0 +1,7 @@
+{
+  "name": "geo-quiz-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
