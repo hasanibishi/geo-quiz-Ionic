@@ -40,6 +40,10 @@ ion-content {
     font-family: "Comic Sans MS";
 }
 
+.text-center {
+    text-align: center;
+}
+
 .selectedRow {
     background-color: $primaryColor;
 }
@@ -48,4 +52,10 @@ ion-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 15px;
+}
+
+.home,
+.board {
+    max-width: 500px;
+    margin: 0 auto;
 }

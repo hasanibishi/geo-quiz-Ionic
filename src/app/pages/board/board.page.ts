@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { IOption } from 'src/app/models/option.model';
 import { IPublicOpinion } from 'src/app/models/public-opinion.model';
 import { IQuestion } from 'src/app/models/question.model';
@@ -21,18 +22,37 @@ export class BoardPage implements OnInit {
   publicOpinion: IPublicOpinion;
   correctAnswer: string = '';
 
-  help_ChangingQuestion: boolean = false;
-  help_50x50: boolean = false;
-  help_PhoneCall: boolean = false;
-  help_Public: boolean = false;
+  usedChangingQuestion: boolean = false;
+  usedHelpBy50x50: boolean = false;
+  usedHelpByPhone: boolean = false;
+  usedHelpByPublic: boolean = false;
 
   constructor(
     private dataService: DataService,
-    private router: Router
+    private router: Router,
+    private alertController: AlertController
   ) { }
 
   ngOnInit() {
     this.getQuestions();
+  }
+
+  async checkQuestion() {
+    const alert = await this.alertController.create({
+      header: 'Confirm',
+      message: 'Is this your final answer?',
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'No'
+        }, {
+          text: 'Yes',
+          handler: () => this.checkAnswer()
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   getQuestions() {
@@ -47,7 +67,7 @@ export class BoardPage implements OnInit {
   }
 
   changeQuestion() {
-    if (!this.help_ChangingQuestion) {
+    if (!this.usedChangingQuestion) {
       this.ranks = this.dataService.getData().sort((a, b) => b.rank - a.rank);
       const fQuestions = this.ranks.find(x => x.rank === this.ranksCount)?.questions;
 
@@ -60,12 +80,12 @@ export class BoardPage implements OnInit {
         this.question = fQuestions[index];
       }
 
-      this.help_ChangingQuestion = true
+      this.usedChangingQuestion = true
     }
   }
 
   use50x50() {
-    if (!this.help_50x50) {
+    if (!this.usedHelpBy50x50) {
 
       const a = this.question.option_a.isCorrect;
       const b = this.question.option_b.isCorrect;
@@ -92,14 +112,12 @@ export class BoardPage implements OnInit {
         this.question.option_b.value = '';
       }
 
-      this.help_50x50 = true;
+      this.usedHelpBy50x50 = true;
     }
   }
 
   usePublic() {
-    if (!this.help_Public) {
-
-      // $('#helpPublicModal').modal('show');
+    if (!this.usedHelpByPublic) {
 
       const a = this.question.option_a.isCorrect;
       const b = this.question.option_b.isCorrect;
@@ -139,15 +157,12 @@ export class BoardPage implements OnInit {
         };
       }
 
-      this.help_Public = true
+      this.usedHelpByPublic = true
     }
   }
 
   usePhone() {
-    if (!this.help_PhoneCall) {
-
-      // $('#helpPhoneModal').modal('show');
-
+    if (!this.usedHelpByPhone) {
       const a = this.question.option_a.isCorrect;
       const b = this.question.option_b.isCorrect;
       const c = this.question.option_c.isCorrect;
@@ -165,29 +180,28 @@ export class BoardPage implements OnInit {
       else if (d)
         this.correctAnswer = 'D';
 
-      this.help_PhoneCall = true
+      this.helpByPhone();
+
+      this.usedHelpByPhone = true
     }
   }
 
   selectedOption(option: IOption) {
     this.answer = option.isCorrect;
-    // $('#confirmModal').modal('show');
+    this.checkQuestion();
   }
 
   checkAnswer() {
     if (this.answer) {
-      // alertify.notify('Correct answer', 'success', 2, () => {
-
       this.ranksCount++;
 
       if (this.ranksCount === 16) {
-        // $('#quizFinishedModal').modal('show');
+        this.quizFinished();
       }
 
       else {
         this.getQuestions();
       }
-      // });
     }
 
     else {
@@ -208,32 +222,117 @@ export class BoardPage implements OnInit {
       else if (d)
         this.correctAnswer = 'D';
 
-      // $('#quizOverModal').modal('show');
+      this.quizOver();
     }
+  }
 
-    // $('#confirmModal').modal('hide');
+  async helpByPhone() {
+    const htmlMessage: string = `
+      <div class="text-center">
+        Your friend says: <br> <i>"I think the correct answer is <b>${this.correctAnswer}</b>"</i>
+      </div>`;
+
+    const alert = await this.alertController.create({
+      header: 'Calling',
+      message: htmlMessage,
+      backdropDismiss: false,
+      buttons: ['Okay, thank you']
+    });
+
+    await alert.present();
+  }
+
+  async quizOver() {
+    const htmlMessage: string = `
+      <div class="text-center">
+          <i class="far fa-frown fa-4x"></i> <br>
+          <span>The correct answer was <b>${this.correctAnswer}</b></span> <br>
+          <span>You earned just € ${this.currentMoney || 0}</span>
+          <br> <br>
+          Do you want to play again?
+      </div>`;
+
+    const alert = await this.alertController.create({
+      message: htmlMessage,
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'No',
+          handler: () => this.goToHome()
+        }, {
+          text: 'Yes',
+          handler: () => this.resetQuiz()
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async quizFinished() {
+    const htmlMessage: string = `
+      <div class="text-center">
+        <i class="far fa-smile-wink fa-4x"></i> <br>
+        <span>Congratulations!</span> <br> <br>
+        <span>You earned € 1 MILLION</span>
+        <br> <br>
+        Do you want to play again?
+      </div>`;
+
+    const alert = await this.alertController.create({
+      message: htmlMessage,
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'No',
+          handler: () => this.goToHome()
+        }, {
+          text: 'Yes',
+          handler: () => this.resetQuiz()
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async leaveQuiz() {
+    const alert = await this.alertController.create({
+      header: 'Confirm',
+      message: 'Are you sure to leave the quiz?',
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'No'
+        }, {
+          text: 'Yes',
+          handler: () => this.goToHome()
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   resetQuiz() {
-    this.help_ChangingQuestion = false;
-    this.help_50x50 = false;
-    this.help_PhoneCall = false;
-    this.help_Public = false;
+    this.usedChangingQuestion = false;
+    this.usedHelpBy50x50 = false;
+    this.usedHelpByPhone = false;
+    this.usedHelpByPublic = false;
     this.ranksCount = 1;
 
     this.getQuestions();
   }
 
   clear() {
-    this.help_ChangingQuestion = false;
-    this.help_50x50 = false;
-    this.help_PhoneCall = false;
-    this.help_Public = false;
+    this.usedChangingQuestion = false;
+    this.usedHelpBy50x50 = false;
+    this.usedHelpByPhone = false;
+    this.usedHelpByPublic = false;
   }
 
   goToHome() {
     this.router.navigate(['home']);
-
     this.clear();
   }
 

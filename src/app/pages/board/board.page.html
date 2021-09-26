@@ -4,8 +4,7 @@
       <div class="header">
         <div>
           <div class="backBtn">
-            <div data-toggle="modal"
-                 data-target="#leaveQuizModal">
+            <div (click)="leaveQuiz()">
               <i class="fas fa-arrow-left"></i>
               <i class="fas fa-running"></i>
             </div>
@@ -14,30 +13,30 @@
           <br>
           <div class="text-center">
             <div class="help">
-              <div [ngClass]="{helpUsed : help_50x50}"
+              <div [ngClass]="{helpUsed : usedHelpBy50x50}"
                    (click)="use50x50()">
-                <i *ngIf="help_50x50"
+                <i *ngIf="usedHelpBy50x50"
                    class="fas fa-slash noneIcon"></i>
                 <span>50x50</span>
               </div>
 
-              <div [ngClass]="{helpUsed : help_PhoneCall}"
+              <div [ngClass]="{helpUsed : usedHelpByPhone}"
                    (click)="usePhone()">
-                <i *ngIf="help_PhoneCall"
+                <i *ngIf="usedHelpByPhone"
                    class="fas fa-slash noneIcon"></i>
                 <i class="fas fa-phone"></i>
               </div>
 
-              <div [ngClass]="{helpUsed : help_Public}"
+              <div [ngClass]="{helpUsed : usedHelpByPublic}"
                    (click)="usePublic()">
-                <i *ngIf="help_Public"
+                <i *ngIf="usedHelpByPublic"
                    class="fas fa-slash noneIcon"></i>
                 <i class="fas fa-users"></i>
               </div>
 
-              <div [ngClass]="{helpUsed : help_ChangingQuestion}"
+              <div [ngClass]="{helpUsed : usedChangingQuestion}"
                    (click)="changeQuestion()">
-                <i *ngIf="help_ChangingQuestion"
+                <i *ngIf="usedChangingQuestion"
                    class="fas fa-slash noneIcon"></i>
                 <i class="fas fa-sync"></i>
               </div>
@@ -99,115 +98,6 @@
     </div>
 
     <div class="modal fade"
-         id="confirmModal"
-         tabindex="-1"
-         role="dialog"
-         data-backdrop="static">
-      <div class="modal-dialog modal-dialog-centered modal-sm"
-           role="document">
-        <div class="modal-content">
-          <div class="modal-body text-center">
-            <h5>Is this your final answer?</h5>
-          </div>
-          <div class="modal-footer">
-            <button type="button"
-                    class="btn btn-danger"
-                    data-dismiss="modal">No</button>
-            <button type="button"
-                    class="btn btn-success"
-                    (click)="checkAnswer()">Yes</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade"
-         id="quizOverModal"
-         tabindex="-1"
-         role="dialog"
-         data-backdrop="static">
-      <div class="modal-dialog modal-dialog-centered modal-sm"
-           role="document">
-        <div class="modal-content">
-          <div class="modal-body text-center">
-            <h5>
-              <i class="far fa-frown fa-4x"></i> <br>
-              <span>The correct answer was <b>{{correctAnswer}}</b></span> <br>
-              <span>You earned just €{{currentMoney || 0 | number: '1.'}}</span>
-              <br> <br>
-              Do you want to play again?
-            </h5>
-          </div>
-          <div class="modal-footer">
-            <button type="button"
-                    class="btn btn-danger"
-                    data-dismiss="modal"
-                    (click)="goToHome()">No</button>
-            <button type="button"
-                    class="btn btn-success"
-                    data-dismiss="modal"
-                    (click)="resetQuiz()">Yes</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade"
-         id="quizFinishedModal"
-         tabindex="-1"
-         role="dialog"
-         data-backdrop="static">
-      <div class="modal-dialog modal-dialog-centered modal-sm"
-           role="document">
-        <div class="modal-content">
-          <div class="modal-body text-center">
-            <h5>
-              <i class="far fa-smile-wink fa-4x"></i> <br>
-              <span>Congratulations!</span> <br> <br>
-              <span>You earned €1 MILLION</span>
-              <br> <br>
-              Do you want to play again?
-            </h5>
-          </div>
-          <div class="modal-footer">
-            <button type="button"
-                    class="btn btn-danger"
-                    data-dismiss="modal"
-                    (click)="goToHome()">No</button>
-            <button type="button"
-                    class="btn btn-success"
-                    data-dismiss="modal"
-                    (click)="resetQuiz()">Yes</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade"
-         id="leaveQuizModal"
-         tabindex="-1"
-         role="dialog"
-         data-backdrop="static">
-      <div class="modal-dialog modal-dialog-centered  modal-sm"
-           role="document">
-        <div class="modal-content">
-          <div class="modal-body text-center">
-            <h5>Are you sure to leave the quiz?</h5>
-          </div>
-          <div class="modal-footer">
-            <button type="button"
-                    class="btn btn-quiz"
-                    data-dismiss="modal">No</button>
-            <button type="button"
-                    class="btn btn-quiz"
-                    data-dismiss="modal"
-                    (click)="goToHome()">Yes</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade"
          id="helpPublicModal"
          tabindex="-1"
          role="dialog"
@@ -242,26 +132,6 @@
                 <span>D</span>
               </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button"
-                    class="btn btn-quiz"
-                    data-dismiss="modal">Okay, thank you</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade"
-         id="helpPhoneModal"
-         tabindex="-1"
-         role="dialog"
-         data-backdrop="static">
-      <div class="modal-dialog modal-dialog-centered modal-sm"
-           role="document">
-        <div class="modal-content">
-          <div class="modal-body text-center">
-            <h5>Your friend says: <br> <i>"I think the correct answer is <b>{{correctAnswer}}</b>"</i></h5>
           </div>
           <div class="modal-footer">
             <button type="button"
