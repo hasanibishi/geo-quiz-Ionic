@@ -1,20 +1,18 @@
-@import "../../style-variables.scss";
+@import "../../../style-variables.scss";
 
 ion-content {
   text-align: center;
 
   img {
     width: 45%;
-    box-shadow: 0px 0px 4px 6px #ccc;
+    box-shadow: 0px 0px 4px 6px $secondaryColor;
     border-radius: 50%;
   }
 
   .title {
-    font-size: 2.5rem;
+    font-size: 2em;
     font-weight: 700;
     color: $secondaryColor;
-    line-height: normal;
-    margin: 0 2rem;
   }
 
   .languages {
@@ -29,11 +27,13 @@ ion-content {
     }
 
     .selectedLanguage {
-      box-shadow: 0px 0px 6px 6px #ccc;
+      box-shadow: 0px 0px 6px 6px $secondaryColor;
     }
   }
 
   ion-button {
     letter-spacing: 4px;
+    border-radius: 30px;
+    overflow: hidden;
   }
 }

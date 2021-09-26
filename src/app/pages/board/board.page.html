@@ -1,0 +1,275 @@
+<ion-content>
+  <div class="board">
+    <div>
+      <div class="header">
+        <div>
+          <div class="backBtn">
+            <div data-toggle="modal"
+                 data-target="#leaveQuizModal">
+              <i class="fas fa-arrow-left"></i>
+              <i class="fas fa-running"></i>
+            </div>
+          </div>
+
+          <br>
+          <div class="text-center">
+            <div class="help">
+              <div [ngClass]="{helpUsed : help_50x50}"
+                   (click)="use50x50()">
+                <i *ngIf="help_50x50"
+                   class="fas fa-slash noneIcon"></i>
+                <span>50x50</span>
+              </div>
+
+              <div [ngClass]="{helpUsed : help_PhoneCall}"
+                   (click)="usePhone()">
+                <i *ngIf="help_PhoneCall"
+                   class="fas fa-slash noneIcon"></i>
+                <i class="fas fa-phone"></i>
+              </div>
+
+              <div [ngClass]="{helpUsed : help_Public}"
+                   (click)="usePublic()">
+                <i *ngIf="help_Public"
+                   class="fas fa-slash noneIcon"></i>
+                <i class="fas fa-users"></i>
+              </div>
+
+              <div [ngClass]="{helpUsed : help_ChangingQuestion}"
+                   (click)="changeQuestion()">
+                <i *ngIf="help_ChangingQuestion"
+                   class="fas fa-slash noneIcon"></i>
+                <i class="fas fa-sync"></i>
+              </div>
+            </div>
+
+            <br>
+
+            <div>
+              <img src="assets/images/logo.png">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="right-side">
+          <div *ngFor="let item of ranks; let first = first"
+               class="ranks"
+               [ngClass]="{selectedRank: item.rank === ranksCount}">
+            <div>
+              <span>{{item.rank}}</span>
+            </div>
+            <div>
+              <span *ngIf="first">€1 MILLION</span>
+              <span *ngIf="item.value">€{{item.value | number: '2.'}}</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="body">
+        <hr class="bg-white">
+
+        <div class="question">
+          <span>
+            {{question?.text}}
+          </span>
+        </div>
+
+        <div class="options">
+          <div (click)="selectedOption(question.option_a)">
+            <span>A:</span>
+            <span>{{question?.option_a?.value}}</span>
+          </div>
+          <div (click)="selectedOption(question.option_b)">
+            <span>B:</span>
+            <span>{{question?.option_b?.value}}</span>
+          </div>
+          <div (click)="selectedOption(question.option_c)">
+            <span>C:</span>
+            <span>{{question?.option_c?.value}}</span>
+          </div>
+          <div (click)="selectedOption(question.option_d)">
+            <span>D:</span>
+            <span>{{question?.option_d?.value}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade"
+         id="confirmModal"
+         tabindex="-1"
+         role="dialog"
+         data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-sm"
+           role="document">
+        <div class="modal-content">
+          <div class="modal-body text-center">
+            <h5>Is this your final answer?</h5>
+          </div>
+          <div class="modal-footer">
+            <button type="button"
+                    class="btn btn-danger"
+                    data-dismiss="modal">No</button>
+            <button type="button"
+                    class="btn btn-success"
+                    (click)="checkAnswer()">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade"
+         id="quizOverModal"
+         tabindex="-1"
+         role="dialog"
+         data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-sm"
+           role="document">
+        <div class="modal-content">
+          <div class="modal-body text-center">
+            <h5>
+              <i class="far fa-frown fa-4x"></i> <br>
+              <span>The correct answer was <b>{{correctAnswer}}</b></span> <br>
+              <span>You earned just €{{currentMoney || 0 | number: '1.'}}</span>
+              <br> <br>
+              Do you want to play again?
+            </h5>
+          </div>
+          <div class="modal-footer">
+            <button type="button"
+                    class="btn btn-danger"
+                    data-dismiss="modal"
+                    (click)="goToHome()">No</button>
+            <button type="button"
+                    class="btn btn-success"
+                    data-dismiss="modal"
+                    (click)="resetQuiz()">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade"
+         id="quizFinishedModal"
+         tabindex="-1"
+         role="dialog"
+         data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-sm"
+           role="document">
+        <div class="modal-content">
+          <div class="modal-body text-center">
+            <h5>
+              <i class="far fa-smile-wink fa-4x"></i> <br>
+              <span>Congratulations!</span> <br> <br>
+              <span>You earned €1 MILLION</span>
+              <br> <br>
+              Do you want to play again?
+            </h5>
+          </div>
+          <div class="modal-footer">
+            <button type="button"
+                    class="btn btn-danger"
+                    data-dismiss="modal"
+                    (click)="goToHome()">No</button>
+            <button type="button"
+                    class="btn btn-success"
+                    data-dismiss="modal"
+                    (click)="resetQuiz()">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade"
+         id="leaveQuizModal"
+         tabindex="-1"
+         role="dialog"
+         data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered  modal-sm"
+           role="document">
+        <div class="modal-content">
+          <div class="modal-body text-center">
+            <h5>Are you sure to leave the quiz?</h5>
+          </div>
+          <div class="modal-footer">
+            <button type="button"
+                    class="btn btn-quiz"
+                    data-dismiss="modal">No</button>
+            <button type="button"
+                    class="btn btn-quiz"
+                    data-dismiss="modal"
+                    (click)="goToHome()">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade"
+         id="helpPublicModal"
+         tabindex="-1"
+         role="dialog"
+         data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-sm"
+           role="document">
+        <div class="modal-content">
+          <div class="modal-body text-center">
+            <div class="helpPublic">
+              <div>
+                <span>{{publicOpinion?.percent_a}}%</span>
+                <span [style.height.%]="publicOpinion?.percent_a"
+                      class="a"></span>
+                <span>A</span>
+              </div>
+              <div>
+                <span>{{publicOpinion?.percent_b}}%</span>
+                <span [style.height.%]="publicOpinion?.percent_b"
+                      class="b"></span>
+                <span>B</span>
+              </div>
+              <div>
+                <span>{{publicOpinion?.percent_c}}%</span>
+                <span [style.height.%]="publicOpinion?.percent_c"
+                      class="c"></span>
+                <span>C</span>
+              </div>
+              <div>
+                <span>{{publicOpinion?.percent_d}}%</span>
+                <span [style.height.%]="publicOpinion?.percent_d"
+                      class="d"></span>
+                <span>D</span>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button"
+                    class="btn btn-quiz"
+                    data-dismiss="modal">Okay, thank you</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade"
+         id="helpPhoneModal"
+         tabindex="-1"
+         role="dialog"
+         data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-sm"
+           role="document">
+        <div class="modal-content">
+          <div class="modal-body text-center">
+            <h5>Your friend says: <br> <i>"I think the correct answer is <b>{{correctAnswer}}</b>"</i></h5>
+          </div>
+          <div class="modal-footer">
+            <button type="button"
+                    class="btn btn-quiz"
+                    data-dismiss="modal">Okay, thank you</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

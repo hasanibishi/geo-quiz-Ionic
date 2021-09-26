@@ -1,0 +1,229 @@
+@import "../../../style-variables.scss";
+
+.board {
+    display: grid;
+    grid-template-rows: auto 1fr;
+
+    > div:first-child {
+        padding: 1rem;
+    }
+
+    .header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        .backBtn {
+            max-width: 150px;
+            margin: 0 auto;
+
+            > div {
+                display: grid;
+                grid-template-columns: auto auto;
+                align-items: center;
+                border: solid 2px $secondaryColor;
+                border-radius: 12px;
+                width: 60px;
+                height: 32px;
+                justify-items: center;
+                color: $secondaryColor;
+
+                &:hover {
+                    background-color: $primaryColor;
+                    cursor: pointer;
+                    transition: 0.3s;
+                }
+
+                .fa-running {
+                    transform: rotateY(180deg);
+                    font-size: 20px;
+                }
+            }
+        }
+
+        .help {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 0.5rem;
+            max-width: 150px;
+            margin: 0 auto;
+
+            .helpUsed:hover {
+                background-color: transparent !important;
+            }
+
+            .noneIcon {
+                color: red;
+                position: absolute;
+                font-size: 30px;
+                padding-left: 16px;
+            }
+
+            > div {
+                display: grid;
+                align-items: center;
+                border: solid 2px $secondaryColor;
+                border-radius: 50%;
+                width: 100%;
+                height: 32px;
+                justify-items: center;
+                color: $secondaryColor;
+
+                &:hover {
+                    background-color: $primaryColor;
+                    cursor: pointer;
+                    transition: 0.3s;
+                }
+            }
+        }
+
+        img {
+            width: 70%;
+            box-shadow: 0px 0px 4px 6px #ccc;
+            border-radius: 50%;
+            margin: 0.5rem;
+        }
+
+        .right-side {
+            .selectedRank {
+                color: #000 !important;
+                background-color: $primaryColor;
+            }
+
+            .ranks {
+                display: grid;
+                grid-template-columns: 40px auto;
+                color: $primaryColor;
+                border-radius: 9px;
+                align-items: center;
+                margin: 0 auto;
+                font-size: 16px;
+                font-weight: bolder;
+                letter-spacing: 4px;
+                padding: 0 10px;
+
+                &:nth-child(1),
+                &:nth-child(6),
+                &:nth-child(11) {
+                    color: #fff;
+                }
+            }
+        }
+    }
+
+    .body {
+        font-size: 20px;
+        font-weight: 400;
+
+        .question {
+            color: #fff;
+            border: solid 2px $secondaryColor;
+            padding: 0.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            color: #fff;
+
+            > div {
+                display: flex;
+                border: solid 2px;
+                border-radius: 5px;
+                padding: 0.25rem;
+                margin: 0.25rem;
+
+                &:hover {
+                    background-color: $primaryColor;
+                    cursor: pointer;
+                    transition: 0.3s;
+
+                    span:first-child {
+                        color: #fff;
+                    }
+                }
+
+                span {
+                    padding: 0 0.25rem;
+
+                    &:first-child {
+                        color: $primaryColor;
+                    }
+                }
+            }
+        }
+    }
+
+    .helpPublic {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        height: 200px;
+
+        > div {
+            display: grid;
+            grid-template-rows: 25px auto 25px;
+
+            span:nth-child(2) {
+                border-radius: 9px;
+            }
+
+            .a {
+                background: -webkit-linear-gradient(to right, #02a871, #51967e);
+                background: linear-gradient(to right, #02a871, #51967e);
+                align-self: end;
+            }
+            .b {
+                background: -webkit-linear-gradient(to right, #024fa8, #3b81d1);
+                background: linear-gradient(to right, #024fa8, #3b81d1);
+                align-self: end;
+            }
+            .c {
+                background: -webkit-linear-gradient(to right, #d3e90c, #cfdd53);
+                background: linear-gradient(to right, #d3e90c, #cfdd53);
+                align-self: end;
+            }
+            .d {
+                background: -webkit-linear-gradient(to right, #29e639, #4fd35a);
+                background: linear-gradient(to right, #29e639, #4fd35a);
+                align-self: end;
+            }
+        }
+    }
+
+    .modal-footer {
+        justify-content: center !important;
+    }
+}
+
+@media (max-width: 470px) {
+    .ranks {
+        font-size: 14px !important;
+    }
+
+    .body {
+        font-size: 16px !important;
+    }
+}
+
+@media (max-width: 440px) {
+    .ranks {
+        letter-spacing: 2px !important;
+    }
+}
+
+@media (max-width: 370px) {
+    .ranks {
+        letter-spacing: 0px !important;
+        grid-template-columns: 30px auto !important;
+    }
+
+    .header {
+        grid-gap: 5px;
+    }
+
+    .body {
+        font-size: 14px !important;
+    }
+}

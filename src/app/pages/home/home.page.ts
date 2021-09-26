@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-
-interface ILanguage {
-  key: string;
-  imgUrl: string;
-}
+import { ILanguage } from 'src/app/models/language.model';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +17,8 @@ export class HomePage implements OnInit {
   ];
 
   constructor(
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private router: Router
   ) {
     const [initLanguage] = this.languages;
     this.translateService.use(initLanguage.key);
@@ -31,8 +29,8 @@ export class HomePage implements OnInit {
 
   }
 
-  goToBoard() {
-
+  start() {
+    this.router.navigate(['board']);
   }
 
   setLanguage(key: string) {

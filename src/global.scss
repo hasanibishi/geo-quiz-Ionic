@@ -28,24 +28,20 @@
 @import "style-variables.scss";
 
 ion-content {
-    margin: 0;
-    --ion-background-color: -webkit-linear-gradient(to right, #6102a8, #8d21df) !important;
-    --ion-background-color: linear-gradient(to right, #6102a8, #8d21df) !important;
+    --ion-background-color: linear-gradient(to right, #6102a8, #9b3be4) !important;
+}
+
+@font-face {
+    font-family: "Comic Sans MS";
+    src: url("assets/font/COMIC.TTF");
 }
 
 * {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-        "Helvetica Neue", sans-serif;
+    font-family: "Comic Sans MS";
 }
 
 .selectedRow {
     background-color: $primaryColor;
-}
-
-.board {
-    max-width: 500px;
-    margin: 0 auto;
-    height: 100vh;
 }
 
 .twoGrid {
