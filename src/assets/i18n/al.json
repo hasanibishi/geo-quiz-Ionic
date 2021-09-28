@@ -1,4 +1,13 @@
 {
     "geo-quiz": "PYETJE<br>GJEOGRAFIKE",
-    "start": "FILLO"
+    "start": "FILLO",
+    "yes": "Po",
+    "no": "Jo",
+    "confirm": "Konfirmo",
+    "is-this-your-final-answer": "Është kjo përgjigja finale?",
+    "correct-answer": "Përgjigja e saktë",
+    "calling": "Duke telefonuar",
+    "okay-thank-you": "Në rregull, ju falenderit",
+    "public-opinion": "Opinioni Publik",
+    "are-you-sure-to-leave-the-quiz": "A jeni i sigurt për të lënë kuizin?"
 }

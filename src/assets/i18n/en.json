@@ -1,4 +1,21 @@
 {
     "geo-quiz": "GEOGRAPHY<br>QUIZ",
-    "start": "START"
+    "start": "START",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "is-this-your-final-answer": "Is this your final answer?",
+    "correct-answer": "Correct answer",
+    "calling": "Calling",
+    "okay-thank-you": "Okay, thank you",
+    "public-opinion": "Public Opinion",
+    "are-you-sure-to-leave-the-quiz": "Are you sure to leave the quiz?",
+    "your-friend-says": "Your friend says",
+    "i-think-the-correct-answer-is": "I think the correct answer is",
+    "the-correct-answer-was": "The correct answer was",
+    "you-earned-just": "You earned just",
+    "do-you-want-to-play-again": "Do you want to play again?",
+    "congratulations": "Congratulations!",
+    "you-earned": "You earned",
+    "million": "MILLION"
 }

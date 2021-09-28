@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { App } from '@capacitor/app';
 import { AlertController, Platform, ToastController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 import { IOption } from 'src/app/models/option.model';
 import { IPublicOpinion } from 'src/app/models/public-opinion.model';
 import { IQuestion } from 'src/app/models/question.model';
@@ -13,7 +14,7 @@ import { DataService } from 'src/app/services/data.service';
   templateUrl: './board.page.html',
   styleUrls: ['./board.page.scss'],
 })
-export class BoardPage implements OnInit {
+export class BoardPage implements OnInit, OnDestroy {
 
   question: IQuestion;
   ranks: IRank[] = [];
@@ -28,14 +29,17 @@ export class BoardPage implements OnInit {
   usedHelpByPhone: boolean = false;
   usedHelpByPublic: boolean = false;
 
+  backSubscription: Subscription;
+
   constructor(
     private dataService: DataService,
     private router: Router,
     private alertController: AlertController,
     private toastController: ToastController,
-    private platform: Platform
+    private platform: Platform,
+    private translateService: TranslateService
   ) {
-    this.platform.backButton.subscribeWithPriority(0, () => this.leaveQuiz());
+    this.backSubscription = this.platform.backButton.subscribeWithPriority(0, () => this.leaveQuiz());
   }
 
   ngOnInit() {
@@ -44,14 +48,14 @@ export class BoardPage implements OnInit {
 
   async checkQuestion() {
     const alert = await this.alertController.create({
-      header: 'Confirm',
-      message: 'Is this your final answer?',
+      header: this.translate('confirm'),
+      message: this.translate('is-this-your-final-answer'),
       backdropDismiss: false,
       buttons: [
         {
-          text: 'No'
+          text: this.translate('yes')
         }, {
-          text: 'Yes',
+          text: this.translate('no'),
           handler: () => this.checkAnswer()
         }
       ]
@@ -201,7 +205,7 @@ export class BoardPage implements OnInit {
   async checkAnswer() {
     if (this.answer) {
       const toast = await this.toastController.create({
-        message: 'Correct answer',
+        message: this.translate('correct-answer'),
         duration: 2000,
         color: 'light',
         cssClass: 'text-center',
@@ -248,14 +252,14 @@ export class BoardPage implements OnInit {
   async helpByPhone() {
     const htmlMessage: string = `
       <div class="text-center">
-        Your friend says: <br> <i>"I think the correct answer is <b>${this.correctAnswer}</b>"</i>
+        ${this.translate('your-friend-says')}: <br> <i>"${this.translate('i-think-the-correct-answer-is')} <b>${this.correctAnswer}</b>"</i>
       </div>`;
 
     const alert = await this.alertController.create({
-      header: 'Calling',
+      header: this.translate('calling'),
       message: htmlMessage,
       backdropDismiss: false,
-      buttons: ['Okay, thank you']
+      buttons: [this.translate('okay-thank-you')]
     });
 
     await alert.present();
@@ -287,10 +291,10 @@ export class BoardPage implements OnInit {
       </div>`;
 
     const alert = await this.alertController.create({
-      header: 'Public Opinion',
+      header: this.translate('public-opinion'),
       message: htmlMessage,
       backdropDismiss: false,
-      buttons: ['Okay, thank you']
+      buttons: [this.translate('okay-thank-you')]
     });
 
     await alert.present();
@@ -307,10 +311,10 @@ export class BoardPage implements OnInit {
     const htmlMessage: string = `
       <div class="text-center">
           <i class="far fa-frown fa-4x"></i> <br>
-          <span>The correct answer was <b>${this.correctAnswer}</b></span> <br>
-          <span>You earned just € ${this.currentMoney || 0}</span>
+          <span>${this.translate('the-correct-answer-was')} <b>${this.correctAnswer}</b></span> <br>
+          <span>${this.translate('you-earned-just')} € ${this.currentMoney || 0}</span>
           <br> <br>
-          Do you want to play again?
+          ${this.translate('do-you-want-to-play-again')}
       </div>`;
 
     const alert = await this.alertController.create({
@@ -318,10 +322,10 @@ export class BoardPage implements OnInit {
       backdropDismiss: false,
       buttons: [
         {
-          text: 'No',
+          text: this.translate('no'),
           handler: () => this.goToHome()
         }, {
-          text: 'Yes',
+          text: this.translate('yes'),
           handler: () => this.resetQuiz()
         }
       ]
@@ -334,10 +338,10 @@ export class BoardPage implements OnInit {
     const htmlMessage: string = `
       <div class="text-center">
         <i class="far fa-smile-wink fa-4x"></i> <br>
-        <span>Congratulations!</span> <br> <br>
-        <span>You earned € 1 MILLION</span>
+        <span>${this.translate('congratulations')}</span> <br> <br>
+        <span>${this.translate('you-earned')} € 1 ${this.translate('million')}</span>
         <br> <br>
-        Do you want to play again?
+        ${this.translate('do-you-want-to-play-again')}
       </div>`;
 
     const alert = await this.alertController.create({
@@ -345,10 +349,10 @@ export class BoardPage implements OnInit {
       backdropDismiss: false,
       buttons: [
         {
-          text: 'No',
+          text: this.translate('no'),
           handler: () => this.goToHome()
         }, {
-          text: 'Yes',
+          text: this.translate('yes'),
           handler: () => this.resetQuiz()
         }
       ]
@@ -359,14 +363,14 @@ export class BoardPage implements OnInit {
 
   async leaveQuiz() {
     const alert = await this.alertController.create({
-      header: 'Confirm',
-      message: 'Are you sure to leave the quiz?',
+      header: this.translate('confirm'),
+      message: this.translate('are-you-sure-to-leave-the-quiz'),
       backdropDismiss: false,
       buttons: [
         {
-          text: 'No'
+          text: this.translate('no'),
         }, {
-          text: 'Yes',
+          text: this.translate('yes'),
           handler: () => this.goToHome()
         }
       ]
@@ -393,7 +397,16 @@ export class BoardPage implements OnInit {
   }
 
   goToHome() {
+    this.backSubscription.unsubscribe();
     this.router.navigate(['home']);
     this.clear();
+  }
+
+  translate(key: string) {
+    return this.translateService.instant(key);
+  }
+
+  ngOnDestroy() {
+    this.backSubscription.unsubscribe();
   }
 }
