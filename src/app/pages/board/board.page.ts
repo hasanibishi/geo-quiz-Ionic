@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { App } from '@capacitor/app';
+import { AlertController, Platform, ToastController } from '@ionic/angular';
 import { IOption } from 'src/app/models/option.model';
 import { IPublicOpinion } from 'src/app/models/public-opinion.model';
 import { IQuestion } from 'src/app/models/question.model';
@@ -30,8 +31,12 @@ export class BoardPage implements OnInit {
   constructor(
     private dataService: DataService,
     private router: Router,
-    private alertController: AlertController
-  ) { }
+    private alertController: AlertController,
+    private toastController: ToastController,
+    private platform: Platform
+  ) {
+    this.platform.backButton.subscribeWithPriority(0, () => this.leaveQuiz());
+  }
 
   ngOnInit() {
     this.getQuestions();
@@ -116,7 +121,7 @@ export class BoardPage implements OnInit {
     }
   }
 
-  usePublic() {
+  usePublicOpinion() {
     if (!this.usedHelpByPublic) {
 
       const a = this.question.option_a.isCorrect;
@@ -157,11 +162,13 @@ export class BoardPage implements OnInit {
         };
       }
 
+      this.helpByPublicOpinion();
+
       this.usedHelpByPublic = true
     }
   }
 
-  usePhone() {
+  usePhoneCall() {
     if (!this.usedHelpByPhone) {
       const a = this.question.option_a.isCorrect;
       const b = this.question.option_b.isCorrect;
@@ -191,8 +198,20 @@ export class BoardPage implements OnInit {
     this.checkQuestion();
   }
 
-  checkAnswer() {
+  async checkAnswer() {
     if (this.answer) {
+      const toast = await this.toastController.create({
+        message: 'Correct answer',
+        duration: 2000,
+        color: 'light',
+        cssClass: 'text-center',
+        position: 'top'
+      });
+
+      toast.present();
+
+      await toast.onDidDismiss();
+
       this.ranksCount++;
 
       if (this.ranksCount === 16) {
@@ -240,6 +259,48 @@ export class BoardPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async helpByPublicOpinion() {
+    const htmlMessage: string = `
+      <div class="helpByPublicOpinion">
+        <div>
+          <span>${this.publicOpinion?.percent_a}%</span>
+          <span id="a"></span>
+          <span class="text-center">A</span>
+        </div>
+        <div>
+          <span>${this.publicOpinion?.percent_b}%</span>
+          <span id="b"></span>
+          <span class="text-center">B</span>
+        </div>
+        <div>
+          <span>${this.publicOpinion?.percent_c}%</span>
+          <span id="c"></span>
+          <span class="text-center">C</span>
+        </div>
+        <div>
+          <span>${this.publicOpinion?.percent_d}%</span>
+          <span id="d"></span>
+          <span class="text-center">D</span>
+        </div>
+      </div>`;
+
+    const alert = await this.alertController.create({
+      header: 'Public Opinion',
+      message: htmlMessage,
+      backdropDismiss: false,
+      buttons: ['Okay, thank you']
+    });
+
+    await alert.present();
+
+    setTimeout(() => {
+      (document.querySelector('#a') as HTMLElement).style.height = `${this.publicOpinion?.percent_a}%`;
+      (document.querySelector('#b') as HTMLElement).style.height = `${this.publicOpinion?.percent_b}%`;
+      (document.querySelector('#c') as HTMLElement).style.height = `${this.publicOpinion?.percent_c}%`;
+      (document.querySelector('#d') as HTMLElement).style.height = `${this.publicOpinion?.percent_d}%`;
+    }, 1000);
   }
 
   async quizOver() {
@@ -335,12 +396,4 @@ export class BoardPage implements OnInit {
     this.router.navigate(['home']);
     this.clear();
   }
-
-  // askForReloadingPage() {
-  //   window.addEventListener("beforeunload", function (e) {
-  //     var confirmationMessage = "\o/";
-  //     e.returnValue = confirmationMessage;
-  //     return confirmationMessage;
-  //   });
-  // }
 }

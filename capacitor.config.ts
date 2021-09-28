@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'geo-quiz-mobile',
+  appName: 'Geo Quiz',
   webDir: 'www',
   bundledWebRuntime: false
 };

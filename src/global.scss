@@ -44,18 +44,47 @@ ion-content {
     text-align: center;
 }
 
-.selectedRow {
-    background-color: $primaryColor;
-}
-
-.twoGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 15px;
-}
-
 .home,
 .board {
     max-width: 500px;
     margin: 0 auto;
+}
+
+.helpByPublicOpinion {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: center;
+    grid-gap: 15px;
+    padding: 0 2rem;
+    height: 200px;
+
+    > div {
+        display: grid;
+        grid-template-rows: 25px auto 25px;
+
+        #a {
+            background: -webkit-linear-gradient(to right, #02a871, #51967e);
+            background: linear-gradient(to right, #02a871, #51967e);
+            align-self: end;
+            border-radius: 9px;
+        }
+        #b {
+            background: -webkit-linear-gradient(to right, #024fa8, #3b81d1);
+            background: linear-gradient(to right, #024fa8, #3b81d1);
+            align-self: end;
+            border-radius: 9px;
+        }
+        #c {
+            background: -webkit-linear-gradient(to right, #d3e90c, #cfdd53);
+            background: linear-gradient(to right, #d3e90c, #cfdd53);
+            align-self: end;
+            border-radius: 9px;
+        }
+        #d {
+            background: -webkit-linear-gradient(to right, #29e639, #4fd35a);
+            background: linear-gradient(to right, #29e639, #4fd35a);
+            align-self: end;
+            border-radius: 9px;
+        }
+    }
 }

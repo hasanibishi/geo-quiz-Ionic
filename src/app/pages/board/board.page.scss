@@ -29,7 +29,6 @@
 
                 &:hover {
                     background-color: $primaryColor;
-                    cursor: pointer;
                     transition: 0.3s;
                 }
 
@@ -69,7 +68,6 @@
 
                 &:hover {
                     background-color: $primaryColor;
-                    cursor: pointer;
                     transition: 0.3s;
                 }
             }
@@ -135,7 +133,6 @@
 
                 &:hover {
                     background-color: $primaryColor;
-                    cursor: pointer;
                     transition: 0.3s;
 
                     span:first-child {
@@ -150,43 +147,6 @@
                         color: $primaryColor;
                     }
                 }
-            }
-        }
-    }
-
-    .helpPublic {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        height: 200px;
-
-        > div {
-            display: grid;
-            grid-template-rows: 25px auto 25px;
-
-            span:nth-child(2) {
-                border-radius: 9px;
-            }
-
-            .a {
-                background: -webkit-linear-gradient(to right, #02a871, #51967e);
-                background: linear-gradient(to right, #02a871, #51967e);
-                align-self: end;
-            }
-            .b {
-                background: -webkit-linear-gradient(to right, #024fa8, #3b81d1);
-                background: linear-gradient(to right, #024fa8, #3b81d1);
-                align-self: end;
-            }
-            .c {
-                background: -webkit-linear-gradient(to right, #d3e90c, #cfdd53);
-                background: linear-gradient(to right, #d3e90c, #cfdd53);
-                align-self: end;
-            }
-            .d {
-                background: -webkit-linear-gradient(to right, #29e639, #4fd35a);
-                background: linear-gradient(to right, #29e639, #4fd35a);
-                align-self: end;
             }
         }
     }

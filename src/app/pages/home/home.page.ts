@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ILanguage } from 'src/app/models/language.model';
+import { Platform } from '@ionic/angular';
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-home',
@@ -18,11 +20,14 @@ export class HomePage implements OnInit {
 
   constructor(
     private translateService: TranslateService,
-    private router: Router
+    private router: Router,
+    private platform: Platform
   ) {
     const [initLanguage] = this.languages;
     this.translateService.use(initLanguage.key);
     this.selectedLanguage = initLanguage.key;
+
+    this.platform.backButton.subscribeWithPriority(0, () => App.exitApp());
   }
 
   ngOnInit() {

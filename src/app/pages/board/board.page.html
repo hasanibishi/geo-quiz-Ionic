@@ -21,14 +21,14 @@
               </div>
 
               <div [ngClass]="{helpUsed : usedHelpByPhone}"
-                   (click)="usePhone()">
+                   (click)="usePhoneCall()">
                 <i *ngIf="usedHelpByPhone"
                    class="fas fa-slash noneIcon"></i>
                 <i class="fas fa-phone"></i>
               </div>
 
               <div [ngClass]="{helpUsed : usedHelpByPublic}"
-                   (click)="usePublic()">
+                   (click)="usePublicOpinion()">
                 <i *ngIf="usedHelpByPublic"
                    class="fas fa-slash noneIcon"></i>
                 <i class="fas fa-users"></i>
@@ -92,51 +92,6 @@
           <div (click)="selectedOption(question.option_d)">
             <span>D:</span>
             <span>{{question?.option_d?.value}}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade"
-         id="helpPublicModal"
-         tabindex="-1"
-         role="dialog"
-         data-backdrop="static">
-      <div class="modal-dialog modal-dialog-centered modal-sm"
-           role="document">
-        <div class="modal-content">
-          <div class="modal-body text-center">
-            <div class="helpPublic">
-              <div>
-                <span>{{publicOpinion?.percent_a}}%</span>
-                <span [style.height.%]="publicOpinion?.percent_a"
-                      class="a"></span>
-                <span>A</span>
-              </div>
-              <div>
-                <span>{{publicOpinion?.percent_b}}%</span>
-                <span [style.height.%]="publicOpinion?.percent_b"
-                      class="b"></span>
-                <span>B</span>
-              </div>
-              <div>
-                <span>{{publicOpinion?.percent_c}}%</span>
-                <span [style.height.%]="publicOpinion?.percent_c"
-                      class="c"></span>
-                <span>C</span>
-              </div>
-              <div>
-                <span>{{publicOpinion?.percent_d}}%</span>
-                <span [style.height.%]="publicOpinion?.percent_d"
-                      class="d"></span>
-                <span>D</span>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button"
-                    class="btn btn-quiz"
-                    data-dismiss="modal">Okay, thank you</button>
           </div>
         </div>
       </div>
