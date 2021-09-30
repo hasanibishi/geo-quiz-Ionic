@@ -5,6 +5,9 @@ import { ILanguage } from 'src/app/models/language.model';
 import { Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { Subscription } from 'rxjs';
+import { Storage } from '@ionic/storage-angular';
+
+const LNG_KEY: string = 'LNG_KEY';
 
 @Component({
   selector: 'app-home',
@@ -24,17 +27,19 @@ export class HomePage implements OnInit, OnDestroy {
   constructor(
     private translateService: TranslateService,
     private router: Router,
-    private platform: Platform
+    private platform: Platform,
+    private storage: Storage
   ) {
-    const [initLanguage] = this.languages;
-    this.translateService.use(initLanguage.key);
-    this.selectedLanguage = initLanguage.key;
-
     this.backSubscription = this.platform.backButton.subscribeWithPriority(0, () => App.exitApp());
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.storage.create();
 
+    const language: string = await this.storage.get(LNG_KEY) ?? 'al';
+
+    this.translateService.use(language);
+    this.selectedLanguage = language;
   }
 
   start() {
@@ -44,6 +49,7 @@ export class HomePage implements OnInit, OnDestroy {
   setLanguage(key: string) {
     this.translateService.use(key);
     this.selectedLanguage = key;
+    this.storage.set(LNG_KEY, key);
   }
 
   ngOnDestroy() {

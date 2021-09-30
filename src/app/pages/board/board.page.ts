@@ -8,6 +8,7 @@ import { IPublicOpinion } from 'src/app/models/public-opinion.model';
 import { IQuestion } from 'src/app/models/question.model';
 import { IRank } from 'src/app/models/rank.model';
 import { DataService } from 'src/app/services/data.service';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-board',
@@ -37,12 +38,18 @@ export class BoardPage implements OnInit, OnDestroy {
     private alertController: AlertController,
     private toastController: ToastController,
     private platform: Platform,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private storage: Storage
   ) {
     this.backSubscription = this.platform.backButton.subscribeWithPriority(0, () => this.leaveQuiz());
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    // TODO: Remove translation from ngOnInit()
+    await this.storage.create();
+    const language: string = await this.storage.get('LNG_KEY') ?? 'al';
+    this.translateService.use(language);
+
     this.getQuestions();
   }
 
@@ -53,9 +60,9 @@ export class BoardPage implements OnInit, OnDestroy {
       backdropDismiss: false,
       buttons: [
         {
-          text: this.translate('yes')
+          text: this.translate('no')
         }, {
-          text: this.translate('no'),
+          text: this.translate('yes'),
           handler: () => this.checkAnswer()
         }
       ]

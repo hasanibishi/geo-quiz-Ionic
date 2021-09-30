@@ -11,6 +11,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HomePage } from './pages/home/home.page';
 import { BoardPage } from './pages/board/board.page';
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -34,7 +35,8 @@ export function createTranslateLoader(http: HttpClient) {
         useFactory: (createTranslateLoader),
         deps: [HttpClient]
       }
-    })
+    }),
+    IonicStorageModule.forRoot()
   ],
   providers: [{
     provide: RouteReuseStrategy,
