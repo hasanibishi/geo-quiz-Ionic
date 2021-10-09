@@ -1510,86 +1510,86 @@ export const JsonData: IRank[] =
                         "isCorrect": false
                     }
                 },
-                // {
-                //     "id": "b6fb3167-5232-4e1a-aec4-7df55f29c441",
-                //     "text": "Who is the capital of Poland?",
-                //     "option_a": {
-                //         "value": "Katowice",
-                //         "isCorrect": false
-                //     },
-                //     "option_b": {
-                //         "value": "Warsaw",
-                //         "isCorrect": true
-                //     },
-                //     "option_c": {
-                //         "value": "Lublin",
-                //         "isCorrect": false
-                //     },
-                //     "option_d": {
-                //         "value": "Sopot",
-                //         "isCorrect": false
-                //     }
-                // },
-                // {
-                //     "id": "2c6dda3d-784a-440c-9ff0-c3580c7b506f",
-                //     "text": "Who is the capital of Belarus?",
-                //     "option_a": {
-                //         "value": "Oslo",
-                //         "isCorrect": false
-                //     },
-                //     "option_b": {
-                //         "value": "Stockholm",
-                //         "isCorrect": false
-                //     },
-                //     "option_c": {
-                //         "value": "Copenhagen",
-                //         "isCorrect": false
-                //     },
-                //     "option_d": {
-                //         "value": "Minsk",
-                //         "isCorrect": true
-                //     }
-                // },
-                // {
-                //     "id": "ceedd1c0-bb24-46a0-85c5-663e95150c22",
-                //     "text": "In which part of Europe is there a desert?",
-                //     "option_a": {
-                //         "value": "South",
-                //         "isCorrect": false
-                //     },
-                //     "option_b": {
-                //         "value": "North",
-                //         "isCorrect": true
-                //     },
-                //     "option_c": {
-                //         "value": "Nowhere",
-                //         "isCorrect": true
-                //     },
-                //     "option_d": {
-                //         "value": "West",
-                //         "isCorrect": false
-                //     }
-                // },
-                // {
-                //     "id": "1a5c57ba-b355-40d8-b16f-65320c706d7a",
-                //     "text": "What is the Earth's smallest Continent?",
-                //     "option_a": {
-                //         "value": "Europe",
-                //         "isCorrect": false
-                //     },
-                //     "option_b": {
-                //         "value": "Australia",
-                //         "isCorrect": true
-                //     },
-                //     "option_c": {
-                //         "value": "Antarctica",
-                //         "isCorrect": false
-                //     },
-                //     "option_d": {
-                //         "value": "South America",
-                //         "isCorrect": false
-                //     }
-                // }
+                {
+                    "id": "b6fb3167-5232-4e1a-aec4-7df55f29c441",
+                    "text": "Who is the capital of Poland?",
+                    "option_a": {
+                        "value": "Katowice",
+                        "isCorrect": false
+                    },
+                    "option_b": {
+                        "value": "Warsaw",
+                        "isCorrect": true
+                    },
+                    "option_c": {
+                        "value": "Lublin",
+                        "isCorrect": false
+                    },
+                    "option_d": {
+                        "value": "Sopot",
+                        "isCorrect": false
+                    }
+                },
+                {
+                    "id": "2c6dda3d-784a-440c-9ff0-c3580c7b506f",
+                    "text": "Who is the capital of Belarus?",
+                    "option_a": {
+                        "value": "Oslo",
+                        "isCorrect": false
+                    },
+                    "option_b": {
+                        "value": "Stockholm",
+                        "isCorrect": false
+                    },
+                    "option_c": {
+                        "value": "Copenhagen",
+                        "isCorrect": false
+                    },
+                    "option_d": {
+                        "value": "Minsk",
+                        "isCorrect": true
+                    }
+                },
+                {
+                    "id": "ceedd1c0-bb24-46a0-85c5-663e95150c22",
+                    "text": "In which part of Europe is there a desert?",
+                    "option_a": {
+                        "value": "South",
+                        "isCorrect": false
+                    },
+                    "option_b": {
+                        "value": "North",
+                        "isCorrect": true
+                    },
+                    "option_c": {
+                        "value": "Nowhere",
+                        "isCorrect": true
+                    },
+                    "option_d": {
+                        "value": "West",
+                        "isCorrect": false
+                    }
+                },
+                {
+                    "id": "1a5c57ba-b355-40d8-b16f-65320c706d7a",
+                    "text": "What is the Earth's smallest Continent?",
+                    "option_a": {
+                        "value": "Europe",
+                        "isCorrect": false
+                    },
+                    "option_b": {
+                        "value": "Australia",
+                        "isCorrect": true
+                    },
+                    "option_c": {
+                        "value": "Antarctica",
+                        "isCorrect": false
+                    },
+                    "option_d": {
+                        "value": "South America",
+                        "isCorrect": false
+                    }
+                }
             ]
         }
     ]

@@ -79,19 +79,19 @@
         <div class="options">
           <div (click)="selectedOption(question.option_a)">
             <span>A:</span>
-            <span [translate]="question?.option_a?.value"></span>
+            <span>{{question?.option_a?.value}}</span>
           </div>
           <div (click)="selectedOption(question.option_b)">
             <span>B:</span>
-            <span [translate]="question?.option_b?.value"></span>
+            <span>{{question?.option_b?.value}}</span>
           </div>
           <div (click)="selectedOption(question.option_c)">
             <span>C:</span>
-            <span [translate]="question?.option_c?.value"></span>
+            <span>{{question?.option_c?.value}}</span>
           </div>
           <div (click)="selectedOption(question.option_d)">
             <span>D:</span>
-            <span [translate]="question?.option_d?.value"></span>
+            <span>{{question?.option_d?.value}}</span>
           </div>
         </div>
       </div>

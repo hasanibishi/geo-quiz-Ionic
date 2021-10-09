@@ -20,7 +20,7 @@ export class BoardPage implements OnInit, OnDestroy {
   question: IQuestion;
   ranks: IRank[] = [];
   ranksCount: number = 1;
-  currentMoney: number;
+  currentEarnedValue: number;
   answer: boolean = false;
   publicOpinion: IPublicOpinion;
   correctAnswer: string = '';
@@ -38,18 +38,12 @@ export class BoardPage implements OnInit, OnDestroy {
     private alertController: AlertController,
     private toastController: ToastController,
     private platform: Platform,
-    private translateService: TranslateService,
-    private storage: Storage
+    private translateService: TranslateService
   ) {
     this.backSubscription = this.platform.backButton.subscribeWithPriority(0, () => this.leaveQuiz());
   }
 
   async ngOnInit() {
-    // TODO: Remove translation from ngOnInit()
-    await this.storage.create();
-    const language: string = await this.storage.get('LNG_KEY') ?? 'al';
-    this.translateService.use(language);
-
     this.getQuestions();
   }
 
@@ -76,7 +70,7 @@ export class BoardPage implements OnInit, OnDestroy {
 
     const fQuestion = this.ranks.find(x => x.rank === this.ranksCount)?.questions;
 
-    this.currentMoney = this.ranks.find(x => x.rank === this.ranksCount - 1)?.value;
+    this.currentEarnedValue = this.ranks.find(x => x.rank === this.ranksCount - 1)?.value;
 
     if (fQuestion)
       this.question = fQuestion[Math.floor(Math.random() * fQuestion?.length)];
@@ -319,7 +313,7 @@ export class BoardPage implements OnInit, OnDestroy {
       <div class="text-center">
           <i class="far fa-frown fa-4x"></i> <br>
           <span>${this.translate('the-correct-answer-was')} <b>${this.correctAnswer}</b></span> <br>
-          <span>${this.translate('you-earned-just')} € ${this.currentMoney || 0}</span>
+          <span>${this.translate('you-earned-just')} € ${this.currentEarnedValue || 0}</span>
           <br> <br>
           ${this.translate('do-you-want-to-play-again')}
       </div>`;
