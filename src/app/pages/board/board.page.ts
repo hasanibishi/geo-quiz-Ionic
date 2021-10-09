@@ -40,10 +40,21 @@ export class BoardPage implements OnInit, OnDestroy {
     private platform: Platform,
     private translateService: TranslateService
   ) {
-    this.backSubscription = this.platform.backButton.subscribeWithPriority(0, () => this.leaveQuiz());
+    this.backSubscription = this.platform.backButton.subscribeWithPriority(1, async () => {
+      const element = await this.alertController.getTop();
+
+      if (element) {
+        element.dismiss();
+        return;
+      }
+
+      else {
+        this.leaveQuiz();
+      }
+    })
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.getQuestions();
   }
 
