@@ -77,19 +77,23 @@
         </div>
 
         <div class="options">
-          <div (click)="selectedOption(question.option_a)">
+          <div (click)="selectedOption(question.option_a, 'A')"
+               id="option_a">
             <span>A:</span>
             <span>{{question?.option_a?.value}}</span>
           </div>
-          <div (click)="selectedOption(question.option_b)">
+          <div (click)="selectedOption(question.option_b, 'B')"
+               id="option_b">
             <span>B:</span>
             <span>{{question?.option_b?.value}}</span>
           </div>
-          <div (click)="selectedOption(question.option_c)">
+          <div (click)="selectedOption(question.option_c, 'C')"
+               id="option_c">
             <span>C:</span>
             <span>{{question?.option_c?.value}}</span>
           </div>
-          <div (click)="selectedOption(question.option_d)">
+          <div (click)="selectedOption(question.option_d, 'D')"
+               id="option_d">
             <span>D:</span>
             <span>{{question?.option_d?.value}}</span>
           </div>

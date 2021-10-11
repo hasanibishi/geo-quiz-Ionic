@@ -8,7 +8,6 @@ import { IPublicOpinion } from 'src/app/models/public-opinion.model';
 import { IQuestion } from 'src/app/models/question.model';
 import { IRank } from 'src/app/models/rank.model';
 import { DataService } from 'src/app/services/data.service';
-import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-board',
@@ -21,9 +20,8 @@ export class BoardPage implements OnInit, OnDestroy {
   ranks: IRank[] = [];
   ranksCount: number = 1;
   currentEarnedValue: number;
-  answer: boolean = false;
   publicOpinion: IPublicOpinion;
-  correctAnswer: string = '';
+  selectedAnswer: IOption;
 
   usedChangingQuestion: boolean = false;
   usedHelpBy50x50: boolean = false;
@@ -54,11 +52,11 @@ export class BoardPage implements OnInit, OnDestroy {
     })
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getQuestions();
   }
 
-  async checkQuestion() {
+  async checkQuestion(): Promise<void> {
     const alert = await this.alertController.create({
       header: this.translate('confirm'),
       message: this.translate('is-this-your-final-answer'),
@@ -76,7 +74,7 @@ export class BoardPage implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  getQuestions() {
+  getQuestions(): void {
     this.ranks = this.dataService.getData().sort((a, b) => b.rank - a.rank);
 
     const fQuestion = this.ranks.find(x => x.rank === this.ranksCount)?.questions;
@@ -87,7 +85,7 @@ export class BoardPage implements OnInit, OnDestroy {
       this.question = fQuestion[Math.floor(Math.random() * fQuestion?.length)];
   }
 
-  changeQuestion() {
+  changeQuestion(): void {
     if (!this.usedChangingQuestion) {
       this.ranks = this.dataService.getData().sort((a, b) => b.rank - a.rank);
       const fQuestions = this.ranks.find(x => x.rank === this.ranksCount)?.questions;
@@ -105,7 +103,7 @@ export class BoardPage implements OnInit, OnDestroy {
     }
   }
 
-  use50x50() {
+  use50x50(): void {
     if (!this.usedHelpBy50x50) {
 
       const a = this.question.option_a.isCorrect;
@@ -137,7 +135,7 @@ export class BoardPage implements OnInit, OnDestroy {
     }
   }
 
-  usePublicOpinion() {
+  usePublicOpinion(): void {
     if (!this.usedHelpByPublic) {
 
       const a = this.question.option_a.isCorrect;
@@ -184,24 +182,12 @@ export class BoardPage implements OnInit, OnDestroy {
     }
   }
 
-  usePhoneCall() {
+  usePhoneCall(): void {
     if (!this.usedHelpByPhone) {
-      const a = this.question.option_a.isCorrect;
-      const b = this.question.option_b.isCorrect;
-      const c = this.question.option_c.isCorrect;
-      const d = this.question.option_d.isCorrect;
 
-      if (a)
-        this.correctAnswer = 'A';
-
-      else if (b)
-        this.correctAnswer = 'B';
-
-      else if (c)
-        this.correctAnswer = 'C';
-
-      else if (d)
-        this.correctAnswer = 'D';
+      this.selectedAnswer = {
+        value: this.getCorrectAnwser()
+      }
 
       this.helpByPhone();
 
@@ -209,13 +195,18 @@ export class BoardPage implements OnInit, OnDestroy {
     }
   }
 
-  selectedOption(option: IOption) {
-    this.answer = option.isCorrect;
+  selectedOption(option: IOption, optionKey: string): void {
+    this.selectedAnswer = {
+      value: optionKey,
+      isCorrect: option.isCorrect
+    };
+
     this.checkQuestion();
   }
 
-  async checkAnswer() {
-    if (this.answer) {
+  async checkAnswer(): Promise<void> {
+
+    if (this.selectedAnswer.isCorrect) {
       const toast = await this.toastController.create({
         message: this.translate('correct-answer'),
         duration: 2000,
@@ -226,12 +217,16 @@ export class BoardPage implements OnInit, OnDestroy {
 
       toast.present();
 
+      this.optionBackgroundColor(this.getCorrectAnwser(), '#289328');
+
       await toast.onDidDismiss();
 
       this.ranksCount++;
 
+      this.optionBackgroundColor(this.getCorrectAnwser(), 'transparent');
+
       if (this.ranksCount === 16) {
-        this.quizFinished();
+        await this.quizFinished();
       }
 
       else {
@@ -240,35 +235,22 @@ export class BoardPage implements OnInit, OnDestroy {
     }
 
     else {
-      const a = this.question.option_a.isCorrect;
-      const b = this.question.option_b.isCorrect;
-      const c = this.question.option_c.isCorrect;
-      const d = this.question.option_d.isCorrect;
-
-      if (a)
-        this.correctAnswer = 'A';
-
-      else if (b)
-        this.correctAnswer = 'B';
-
-      else if (c)
-        this.correctAnswer = 'C';
-
-      else if (d)
-        this.correctAnswer = 'D';
+      this.selectedAnswer = {
+        value: this.getCorrectAnwser()
+      }
 
       this.quizOver();
     }
   }
 
-  async helpByPhone() {
+  async helpByPhone(): Promise<void> {
     const htmlMessage: string = `
       <div class="text-center">
-        ${this.translate('your-friend-says')}: <br> <i>"${this.translate('i-think-the-correct-answer-is')} <b>${this.correctAnswer}</b>"</i>
+        ${this.translate('your-friend-says')}: <br> <i>"${this.translate('i-think-the-correct-answer-is')} <b>${this.selectedAnswer.value}</b>"</i>
       </div>`;
 
     const alert = await this.alertController.create({
-      header: this.translate('calling'),
+      header: `${this.translate('calling')}...`,
       message: htmlMessage,
       backdropDismiss: false,
       buttons: [this.translate('okay-thank-you')]
@@ -277,7 +259,7 @@ export class BoardPage implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  async helpByPublicOpinion() {
+  async helpByPublicOpinion(): Promise<void> {
     const htmlMessage: string = `
       <div class="helpByPublicOpinion">
         <div>
@@ -319,11 +301,11 @@ export class BoardPage implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  async quizOver() {
+  async quizOver(): Promise<void> {
     const htmlMessage: string = `
       <div class="text-center">
           <i class="far fa-frown fa-4x"></i> <br>
-          <span>${this.translate('the-correct-answer-was')} <b>${this.correctAnswer}</b></span> <br>
+          <span>${this.translate('the-correct-answer-was')} <b>${this.selectedAnswer.value}</b></span> <br>
           <span>${this.translate('you-earned-just')} € ${this.currentEarnedValue || 0}</span>
           <br> <br>
           ${this.translate('do-you-want-to-play-again')}
@@ -346,7 +328,7 @@ export class BoardPage implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  async quizFinished() {
+  async quizFinished(): Promise<void> {
     const htmlMessage: string = `
       <div class="text-center">
         <i class="far fa-smile-wink fa-4x"></i> <br>
@@ -373,7 +355,7 @@ export class BoardPage implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  async leaveQuiz() {
+  async leaveQuiz(): Promise<void> {
     const alert = await this.alertController.create({
       header: this.translate('confirm'),
       message: this.translate('are-you-sure-to-leave-the-quiz'),
@@ -391,7 +373,22 @@ export class BoardPage implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  resetQuiz() {
+  getCorrectAnwser(): string {
+    let options: IOption[] = [];
+
+    options.push(
+      { value: 'A', isCorrect: this.question.option_a.isCorrect },
+      { value: 'B', isCorrect: this.question.option_b.isCorrect },
+      { value: 'C', isCorrect: this.question.option_c.isCorrect },
+      { value: 'D', isCorrect: this.question.option_d.isCorrect }
+    )
+
+    const foundOption = options.find(x => x.isCorrect === true);
+
+    return foundOption.value;
+  }
+
+  resetQuiz(): void {
     this.usedChangingQuestion = false;
     this.usedHelpBy50x50 = false;
     this.usedHelpByPhone = false;
@@ -401,24 +398,28 @@ export class BoardPage implements OnInit, OnDestroy {
     this.getQuestions();
   }
 
-  clear() {
+  optionBackgroundColor(option: string, color: string): void {
+    (document.querySelector(`#option_${option.toLowerCase()}`) as HTMLElement).style.backgroundColor = color;
+  }
+
+  clear(): void {
     this.usedChangingQuestion = false;
     this.usedHelpBy50x50 = false;
     this.usedHelpByPhone = false;
     this.usedHelpByPublic = false;
   }
 
-  goToHome() {
+  goToHome(): void {
     this.backSubscription.unsubscribe();
     this.router.navigate(['home']);
     this.clear();
   }
 
-  translate(key: string) {
+  translate(key: string): string {
     return this.translateService.instant(key);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.backSubscription.unsubscribe();
   }
 }

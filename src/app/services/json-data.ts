@@ -756,7 +756,7 @@ export const JsonData: IRank[] =
                         "isCorrect": false
                     },
                     "option_b": {
-                        "value": "Mississippi River ",
+                        "value": "Mississippi River",
                         "isCorrect": false
                     },
                     "option_c": {
@@ -790,7 +790,7 @@ export const JsonData: IRank[] =
                 },
                 {
                     "id": "e415a8f3-1286-4c81-a9a7-2d424f4b91da",
-                    "text": "What is the height of Mount Everest",
+                    "text": "What is the height of Mount Everest?",
                     "option_a": {
                         "value": "10,000 meters",
                         "isCorrect": false
@@ -1024,7 +1024,7 @@ export const JsonData: IRank[] =
                     "id": "f57c2af3-ff78-4868-b2d7-cb69b925e086",
                     "text": "Which is the biggest desert in the world?",
                     "option_a": {
-                        "value": "Antarctic desert",
+                        "value": "Antarctic Desert",
                         "isCorrect": true
                     },
                     "option_b": {
@@ -1150,7 +1150,7 @@ export const JsonData: IRank[] =
                     "id": "f5aae6a7-bf8c-4c38-bab2-a60874dbb77f",
                     "text": "Which countries have pyramids older than egypt?",
                     "option_a": {
-                        "value": "Marroco",
+                        "value": "Morocco",
                         "isCorrect": false
                     },
                     "option_b": {
@@ -1214,7 +1214,7 @@ export const JsonData: IRank[] =
                 },
                 {
                     "id": "f96a44eb-ba99-471c-b9ef-074b67cfa8a2",
-                    "text": "How many people live in Bosnia and Herzegovina",
+                    "text": "How many people live in Bosnia and Herzegovina?",
                     "option_a": {
                         "value": "4.61 million",
                         "isCorrect": false
@@ -1559,7 +1559,7 @@ export const JsonData: IRank[] =
                     },
                     "option_b": {
                         "value": "North",
-                        "isCorrect": true
+                        "isCorrect": false
                     },
                     "option_c": {
                         "value": "Nowhere",
