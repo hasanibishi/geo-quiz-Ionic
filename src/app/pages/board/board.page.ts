@@ -28,6 +28,8 @@ export class BoardPage implements OnInit, OnDestroy {
   usedHelpByPhone: boolean = false;
   usedHelpByPublic: boolean = false;
 
+  onWrongAnswer: boolean = false;
+
   backSubscription: Subscription;
 
   constructor(
@@ -42,8 +44,14 @@ export class BoardPage implements OnInit, OnDestroy {
       const element = await this.alertController.getTop();
 
       if (element) {
-        element.dismiss();
-        return;
+        if (this.onWrongAnswer) {
+          this.goToHome();
+          element.dismiss();
+        }
+        else {
+          element.dismiss();
+          return;
+        }
       }
 
       else {
@@ -302,6 +310,8 @@ export class BoardPage implements OnInit, OnDestroy {
   }
 
   async quizOver(): Promise<void> {
+    this.onWrongAnswer = true;
+
     const htmlMessage: string = `
       <div class="text-center">
           <i class="far fa-frown fa-4x"></i> <br>
@@ -389,10 +399,8 @@ export class BoardPage implements OnInit, OnDestroy {
   }
 
   resetQuiz(): void {
-    this.usedChangingQuestion = false;
-    this.usedHelpBy50x50 = false;
-    this.usedHelpByPhone = false;
-    this.usedHelpByPublic = false;
+    this.clear();
+
     this.ranksCount = 1;
 
     this.getQuestions();
@@ -407,6 +415,7 @@ export class BoardPage implements OnInit, OnDestroy {
     this.usedHelpBy50x50 = false;
     this.usedHelpByPhone = false;
     this.usedHelpByPublic = false;
+    this.onWrongAnswer = false;
   }
 
   goToHome(): void {
