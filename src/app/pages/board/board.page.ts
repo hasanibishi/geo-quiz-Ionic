@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { AlertController, Platform, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { AudioType } from 'src/app/models/audio.enum';
 import { IOption } from 'src/app/models/option.model';
-import { IPublicOpinion } from 'src/app/models/public-opinion.model';
+import { IHallAssistance } from 'src/app/models/hall-assistance.model';
 import { IQuestion } from 'src/app/models/question.model';
 import { IRank } from 'src/app/models/rank.model';
 import { DataService } from 'src/app/services/data.service';
@@ -20,15 +21,17 @@ export class BoardPage implements OnInit, OnDestroy {
   ranks: IRank[] = [];
   ranksCount: number = 1;
   currentEarnedValue: number;
-  publicOpinion: IPublicOpinion;
+  hallAssistance: IHallAssistance;
   selectedAnswer: IOption;
 
   usedChangingQuestion: boolean = false;
   usedHelpBy50x50: boolean = false;
   usedHelpByPhone: boolean = false;
-  usedHelpByPublic: boolean = false;
+  usedHelpByHall: boolean = false;
 
   onWrongAnswer: boolean = false;
+
+  AUDIO_TYPE = AudioType;
 
   backSubscription: Subscription;
 
@@ -65,6 +68,8 @@ export class BoardPage implements OnInit, OnDestroy {
   }
 
   async checkQuestion(): Promise<void> {
+    this.playAudio(this.AUDIO_TYPE.FINAL_ANSWER);
+
     const alert = await this.alertController.create({
       header: this.translate('confirm'),
       message: this.translate('is-this-your-final-answer'),
@@ -143,8 +148,8 @@ export class BoardPage implements OnInit, OnDestroy {
     }
   }
 
-  usePublicOpinion(): void {
-    if (!this.usedHelpByPublic) {
+  useHallAssistance(): void {
+    if (!this.usedHelpByHall) {
 
       const a = this.question.option_a.isCorrect;
       const b = this.question.option_b.isCorrect;
@@ -152,7 +157,7 @@ export class BoardPage implements OnInit, OnDestroy {
       const d = this.question.option_d.isCorrect;
 
       if (a) {
-        this.publicOpinion = {
+        this.hallAssistance = {
           percent_a: 80,
           percent_b: 5,
           percent_c: 5,
@@ -160,7 +165,7 @@ export class BoardPage implements OnInit, OnDestroy {
         };
       }
       else if (b) {
-        this.publicOpinion = {
+        this.hallAssistance = {
           percent_a: 5,
           percent_b: 80,
           percent_c: 5,
@@ -168,7 +173,7 @@ export class BoardPage implements OnInit, OnDestroy {
         };
       }
       else if (c) {
-        this.publicOpinion = {
+        this.hallAssistance = {
           percent_a: 5,
           percent_b: 5,
           percent_c: 80,
@@ -176,7 +181,7 @@ export class BoardPage implements OnInit, OnDestroy {
         };
       }
       else if (d) {
-        this.publicOpinion = {
+        this.hallAssistance = {
           percent_a: 10,
           percent_b: 5,
           percent_c: 5,
@@ -184,9 +189,9 @@ export class BoardPage implements OnInit, OnDestroy {
         };
       }
 
-      this.helpByPublicOpinion();
+      this.helpByHallAssistance();
 
-      this.usedHelpByPublic = true
+      this.usedHelpByHall = true
     }
   }
 
@@ -215,6 +220,8 @@ export class BoardPage implements OnInit, OnDestroy {
   async checkAnswer(): Promise<void> {
 
     if (this.selectedAnswer.isCorrect) {
+      this.playAudio(this.AUDIO_TYPE.WIN);
+
       const toast = await this.toastController.create({
         message: this.translate('correct-answer'),
         duration: 2000,
@@ -267,33 +274,33 @@ export class BoardPage implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  async helpByPublicOpinion(): Promise<void> {
+  async helpByHallAssistance(): Promise<void> {
     const htmlMessage: string = `
-      <div class="helpByPublicOpinion">
+      <div class="helpByHallAssistance">
         <div>
-          <span>${this.publicOpinion?.percent_a}%</span>
+          <span>${this.hallAssistance?.percent_a}%</span>
           <span id="a"></span>
           <span class="text-center">A</span>
         </div>
         <div>
-          <span>${this.publicOpinion?.percent_b}%</span>
+          <span>${this.hallAssistance?.percent_b}%</span>
           <span id="b"></span>
           <span class="text-center">B</span>
         </div>
         <div>
-          <span>${this.publicOpinion?.percent_c}%</span>
+          <span>${this.hallAssistance?.percent_c}%</span>
           <span id="c"></span>
           <span class="text-center">C</span>
         </div>
         <div>
-          <span>${this.publicOpinion?.percent_d}%</span>
+          <span>${this.hallAssistance?.percent_d}%</span>
           <span id="d"></span>
           <span class="text-center">D</span>
         </div>
       </div>`;
 
     const alert = await this.alertController.create({
-      header: this.translate('public-opinion'),
+      header: this.translate('hall-assistance'),
       message: htmlMessage,
       backdropDismiss: false,
       buttons: [this.translate('okay-thank-you')]
@@ -302,15 +309,17 @@ export class BoardPage implements OnInit, OnDestroy {
     await alert.present();
 
     setTimeout(() => {
-      (document.querySelector('#a') as HTMLElement).style.height = `${this.publicOpinion?.percent_a}%`;
-      (document.querySelector('#b') as HTMLElement).style.height = `${this.publicOpinion?.percent_b}%`;
-      (document.querySelector('#c') as HTMLElement).style.height = `${this.publicOpinion?.percent_c}%`;
-      (document.querySelector('#d') as HTMLElement).style.height = `${this.publicOpinion?.percent_d}%`;
+      (document.querySelector('#a') as HTMLElement).style.height = `${this.hallAssistance?.percent_a}%`;
+      (document.querySelector('#b') as HTMLElement).style.height = `${this.hallAssistance?.percent_b}%`;
+      (document.querySelector('#c') as HTMLElement).style.height = `${this.hallAssistance?.percent_c}%`;
+      (document.querySelector('#d') as HTMLElement).style.height = `${this.hallAssistance?.percent_d}%`;
     }, 1000);
   }
 
   async quizOver(): Promise<void> {
     this.onWrongAnswer = true;
+
+    this.playAudio(this.AUDIO_TYPE.LOSE);
 
     const htmlMessage: string = `
       <div class="text-center">
@@ -342,7 +351,7 @@ export class BoardPage implements OnInit, OnDestroy {
     const htmlMessage: string = `
       <div class="text-center">
         <i class="far fa-smile-wink fa-4x"></i> <br>
-        <span>${this.translate('congratulations')}</span> <br> <br>
+        <span>${this.translate('congratulations')}</span> <br>
         <span>${this.translate('you-earned')} € 1 ${this.translate('million')}</span>
         <br> <br>
         ${this.translate('do-you-want-to-play-again')}
@@ -414,7 +423,7 @@ export class BoardPage implements OnInit, OnDestroy {
     this.usedChangingQuestion = false;
     this.usedHelpBy50x50 = false;
     this.usedHelpByPhone = false;
-    this.usedHelpByPublic = false;
+    this.usedHelpByHall = false;
     this.onWrongAnswer = false;
   }
 
@@ -422,6 +431,12 @@ export class BoardPage implements OnInit, OnDestroy {
     this.backSubscription.unsubscribe();
     this.router.navigate(['home']);
     this.clear();
+  }
+
+  playAudio(audioType: string) {
+    const audio = new Audio();
+    audio.src = `assets/sounds/${audioType}`;
+    audio.play();
   }
 
   translate(key: string): string {

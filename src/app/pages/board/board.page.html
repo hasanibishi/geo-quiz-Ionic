@@ -27,9 +27,9 @@
                 <i class="fas fa-phone"></i>
               </div>
 
-              <div [ngClass]="{helpUsed : usedHelpByPublic}"
-                   (click)="usePublicOpinion()">
-                <i *ngIf="usedHelpByPublic"
+              <div [ngClass]="{helpUsed : usedHelpByHall}"
+                   (click)="useHallAssistance()">
+                <i *ngIf="usedHelpByHall"
                    class="fas fa-slash noneIcon"></i>
                 <i class="fas fa-users"></i>
               </div>
