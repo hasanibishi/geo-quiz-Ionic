@@ -792,19 +792,19 @@ export const JsonData: IRank[] =
                     "id": "e415a8f3-1286-4c81-a9a7-2d424f4b91da",
                     "text": "What is the height of Mount Everest?",
                     "option_a": {
-                        "value": "10,000 meters",
+                        "value": "10,000 m",
                         "isCorrect": false
                     },
                     "option_b": {
-                        "value": "4,240 meters",
+                        "value": "4,240 m",
                         "isCorrect": false
                     },
                     "option_c": {
-                        "value": "15,220 meters",
+                        "value": "15,220 m",
                         "isCorrect": false
                     },
                     "option_d": {
-                        "value": "8,849 meters",
+                        "value": "8,849 m",
                         "isCorrect": true
                     }
                 },
@@ -1148,7 +1148,7 @@ export const JsonData: IRank[] =
                 },
                 {
                     "id": "f5aae6a7-bf8c-4c38-bab2-a60874dbb77f",
-                    "text": "Which countries have pyramids older than egypt?",
+                    "text": "Which countries have pyramids older than Egypt?",
                     "option_a": {
                         "value": "Morocco",
                         "isCorrect": false
@@ -1320,7 +1320,7 @@ export const JsonData: IRank[] =
                 },
                 {
                     "id": "47670631-259d-4923-94b6-483adf12d762",
-                    "text": "Which is colder: The North Pole or the South Pole?",
+                    "text": "Which Pole is colder?",
                     "option_a": {
                         "value": "Both are cold",
                         "isCorrect": false
@@ -1334,7 +1334,7 @@ export const JsonData: IRank[] =
                         "isCorrect": false
                     },
                     "option_d": {
-                        "value": "Both are same",
+                        "value": "None of them",
                         "isCorrect": false
                     }
                 },
