@@ -6,6 +6,8 @@ import { Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { Subscription } from 'rxjs';
 import { Storage } from '@ionic/storage-angular';
+import { AudioType } from 'src/app/models/audio.enum';
+import { DataService } from 'src/app/services/data.service';
 
 const LNG_KEY: string = 'LNG_KEY';
 
@@ -24,11 +26,14 @@ export class HomePage implements OnInit, OnDestroy {
 
   backSubscription: Subscription;
 
+  AUDIO_TYPE = AudioType;
+
   constructor(
     private translateService: TranslateService,
     private router: Router,
     private platform: Platform,
-    private storage: Storage
+    private storage: Storage,
+    private dataService: DataService
   ) {
     this.backSubscription = this.platform.backButton.subscribeWithPriority(0, () => App.exitApp());
   }
@@ -50,6 +55,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.translateService.use(key);
     this.selectedLanguage = key;
     this.storage.set(LNG_KEY, key);
+    this.dataService.playAudio(this.AUDIO_TYPE.TAP);
   }
 
   ngOnDestroy() {

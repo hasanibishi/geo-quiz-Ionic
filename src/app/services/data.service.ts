@@ -31,7 +31,13 @@ export class DataService {
     }))
   }
 
-  translate(key: string) {
+  translate(key: string): string {
     return this.translateService.instant(key);
+  }
+
+  playAudio(audioType: string): void {
+    const audio = new Audio();
+    audio.src = `assets/sounds/${audioType}`;
+    audio.play();
   }
 }

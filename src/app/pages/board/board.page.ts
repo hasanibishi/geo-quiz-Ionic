@@ -68,7 +68,7 @@ export class BoardPage implements OnInit, OnDestroy {
   }
 
   async checkQuestion(): Promise<void> {
-    this.playAudio(this.AUDIO_TYPE.FINAL_ANSWER);
+    this.dataService.playAudio(this.AUDIO_TYPE.FINAL_ANSWER);
 
     const alert = await this.alertController.create({
       header: this.translate('confirm'),
@@ -220,7 +220,7 @@ export class BoardPage implements OnInit, OnDestroy {
   async checkAnswer(): Promise<void> {
 
     if (this.selectedAnswer.isCorrect) {
-      this.playAudio(this.AUDIO_TYPE.WIN);
+      this.dataService.playAudio(this.AUDIO_TYPE.WIN);
 
       const toast = await this.toastController.create({
         message: this.translate('correct-answer'),
@@ -319,7 +319,7 @@ export class BoardPage implements OnInit, OnDestroy {
   async quizOver(): Promise<void> {
     this.onWrongAnswer = true;
 
-    this.playAudio(this.AUDIO_TYPE.LOSE);
+    this.dataService.playAudio(this.AUDIO_TYPE.LOSE);
 
     const htmlMessage: string = `
       <div class="text-center">
@@ -431,12 +431,6 @@ export class BoardPage implements OnInit, OnDestroy {
     this.backSubscription.unsubscribe();
     this.router.navigate(['home']);
     this.clear();
-  }
-
-  playAudio(audioType: string) {
-    const audio = new Audio();
-    audio.src = `assets/sounds/${audioType}`;
-    audio.play();
   }
 
   translate(key: string): string {
