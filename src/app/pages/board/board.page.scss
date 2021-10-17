@@ -1,50 +1,52 @@
 @import "../../../style-variables.scss";
 
+.backBtn {
+    margin-left: 1rem;
+    margin-top: 1rem;
+
+    > div {
+        display: grid;
+        grid-template-columns: auto auto;
+        align-items: center;
+        border: solid 2px $secondaryColor;
+        border-radius: 12px;
+        width: 60px;
+        height: 32px;
+        justify-items: center;
+        color: $secondaryColor;
+
+        &:hover {
+            background-color: $primaryColor;
+            transition: 0.3s;
+        }
+
+        .fa-running {
+            transform: rotateY(180deg);
+            font-size: 20px;
+        }
+    }
+}
+
 .board {
     display: grid;
-    grid-template-rows: auto 1fr;
 
     > div:first-child {
-        padding: 1rem;
+        padding: 0.5rem 1rem;
     }
 
     .header {
         display: grid;
         grid-template-columns: 1fr 1fr;
 
-        .backBtn {
-            max-width: 150px;
-            margin: 0 auto;
-
-            > div {
-                display: grid;
-                grid-template-columns: auto auto;
-                align-items: center;
-                border: solid 2px $secondaryColor;
-                border-radius: 12px;
-                width: 60px;
-                height: 32px;
-                justify-items: center;
-                color: $secondaryColor;
-
-                &:hover {
-                    background-color: $primaryColor;
-                    transition: 0.3s;
-                }
-
-                .fa-running {
-                    transform: rotateY(180deg);
-                    font-size: 20px;
-                }
-            }
-        }
-
         .help {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            justify-items: center;
             grid-gap: 0.5rem;
-            max-width: 150px;
+            width: 140px;
+            height: 140px;
             margin: 0 auto;
+            font-size: 20px;
 
             .helpUsed:hover {
                 background-color: transparent !important;
@@ -59,10 +61,10 @@
             > div {
                 display: grid;
                 align-items: center;
-                border: solid 2px $secondaryColor;
+                border: solid 4px $secondaryColor;
                 border-radius: 50%;
                 width: 100%;
-                height: 32px;
+                height: 100%;
                 justify-items: center;
                 color: $secondaryColor;
 
@@ -82,7 +84,7 @@
 
         .right-side {
             .selectedRank {
-                color: #000 !important;
+                color: #fff !important;
                 background-color: $primaryColor;
             }
 
@@ -108,7 +110,8 @@
     }
 
     .body {
-        font-size: 20px;
+        overflow-wrap: anywhere;
+        font-size: 18px;
         font-weight: 400;
 
         .question {
@@ -125,7 +128,8 @@
             color: #fff;
 
             > div {
-                display: flex;
+                display: grid;
+                grid-template-columns: 30px 1fr;
                 border: solid 2px;
                 border-radius: 5px;
                 padding: 0.25rem;
@@ -160,10 +164,6 @@
     .ranks {
         font-size: 14px !important;
     }
-
-    .body {
-        font-size: 16px !important;
-    }
 }
 
 @media (max-width: 440px) {
@@ -182,7 +182,12 @@
         grid-gap: 5px;
     }
 
+    .help {
+        width: 120px !important;
+        height: 120px !important;
+    }
+
     .body {
-        font-size: 14px !important;
+        font-size: 15px !important;
     }
 }

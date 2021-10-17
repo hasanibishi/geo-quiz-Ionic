@@ -1,23 +1,23 @@
 <ion-content>
+  <div class="backBtn">
+    <div (click)="leaveQuiz()">
+      <i class="fas fa-arrow-left"></i>
+      <i class="fas fa-running"></i>
+    </div>
+  </div>
+
   <div class="board">
     <div>
       <div class="header">
         <div>
-          <div class="backBtn">
-            <div (click)="leaveQuiz()">
-              <i class="fas fa-arrow-left"></i>
-              <i class="fas fa-running"></i>
-            </div>
-          </div>
-
-          <br>
           <div class="text-center">
             <div class="help">
               <div [ngClass]="{helpUsed : usedHelpBy50x50}"
                    (click)="use50x50()">
                 <i *ngIf="usedHelpBy50x50"
                    class="fas fa-slash noneIcon"></i>
-                <span>50x50</span>
+                <!-- <span>50x50</span> -->
+                <i class="fas fa-divide"></i>
               </div>
 
               <div [ngClass]="{helpUsed : usedHelpByPhone}"
