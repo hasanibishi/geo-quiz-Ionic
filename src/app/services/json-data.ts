@@ -1148,7 +1148,7 @@ export const JsonData: IRank[] =
                 },
                 {
                     "id": "f5aae6a7-bf8c-4c38-bab2-a60874dbb77f",
-                    "text": "Which countries have pyramids older than Egypt?",
+                    "text": "Which country has pyramids older than Egypt?",
                     "option_a": {
                         "value": "Morocco",
                         "isCorrect": false

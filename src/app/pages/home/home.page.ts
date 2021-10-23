@@ -52,10 +52,10 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   setLanguage(key: string) {
+    this.dataService.playAudio(this.AUDIO_TYPE.TAP);
     this.translateService.use(key);
     this.selectedLanguage = key;
     this.storage.set(LNG_KEY, key);
-    this.dataService.playAudio(this.AUDIO_TYPE.TAP);
   }
 
   ngOnDestroy() {

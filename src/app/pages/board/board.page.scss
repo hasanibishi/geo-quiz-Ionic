@@ -15,11 +15,6 @@
         justify-items: center;
         color: $secondaryColor;
 
-        &:hover {
-            background-color: $primaryColor;
-            transition: 0.3s;
-        }
-
         .fa-running {
             transform: rotateY(180deg);
             font-size: 20px;
@@ -48,10 +43,6 @@
             margin: 0 auto;
             font-size: 20px;
 
-            .helpUsed:hover {
-                background-color: transparent !important;
-            }
-
             .noneIcon {
                 color: red;
                 position: absolute;
@@ -67,11 +58,6 @@
                 height: 100%;
                 justify-items: center;
                 color: $secondaryColor;
-
-                &:hover {
-                    background-color: $primaryColor;
-                    transition: 0.3s;
-                }
             }
         }
 
@@ -135,21 +121,8 @@
                 padding: 0.25rem;
                 margin: 0.25rem;
 
-                &:hover {
-                    background-color: $primaryColor;
-                    transition: 0.3s;
-
-                    span:first-child {
-                        color: #fff;
-                    }
-                }
-
                 span {
                     padding: 0 0.25rem;
-
-                    &:first-child {
-                        color: $primaryColor;
-                    }
                 }
             }
         }

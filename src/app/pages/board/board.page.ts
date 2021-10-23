@@ -9,6 +9,7 @@ import { IHallAssistance } from 'src/app/models/hall-assistance.model';
 import { IQuestion } from 'src/app/models/question.model';
 import { IRank } from 'src/app/models/rank.model';
 import { DataService } from 'src/app/services/data.service';
+import { OptionColor } from 'src/app/models/option-color.enum';
 
 @Component({
   selector: 'app-board',
@@ -19,7 +20,7 @@ export class BoardPage implements OnInit, OnDestroy {
 
   question: IQuestion;
   ranks: IRank[] = [];
-  ranksCount: number = 1;
+  ranksCount: number = 15;
   currentEarnedValue: number;
   hallAssistance: IHallAssistance;
   selectedAnswer: IOption;
@@ -32,6 +33,7 @@ export class BoardPage implements OnInit, OnDestroy {
   onWrongAnswer: boolean = false;
 
   AUDIO_TYPE = AudioType;
+  OPTION_COLOR = OptionColor;
 
   backSubscription: Subscription;
 
@@ -53,6 +55,7 @@ export class BoardPage implements OnInit, OnDestroy {
         }
         else {
           element.dismiss();
+          this.clearColors();
           return;
         }
       }
@@ -76,7 +79,8 @@ export class BoardPage implements OnInit, OnDestroy {
       backdropDismiss: false,
       buttons: [
         {
-          text: this.translate('no')
+          text: this.translate('no'),
+          handler: () => this.clearColors()
         }, {
           text: this.translate('yes'),
           handler: () => this.checkAnswer()
@@ -88,6 +92,8 @@ export class BoardPage implements OnInit, OnDestroy {
   }
 
   getQuestions(): void {
+    this.clearColors();
+
     this.ranks = this.dataService.getData().sort((a, b) => b.rank - a.rank);
 
     const fQuestion = this.ranks.find(x => x.rank === this.ranksCount)?.questions;
@@ -100,6 +106,9 @@ export class BoardPage implements OnInit, OnDestroy {
 
   changeQuestion(): void {
     if (!this.usedChangingQuestion) {
+
+      this.dataService.playAudio(this.AUDIO_TYPE.DIVIDE);
+
       this.ranks = this.dataService.getData().sort((a, b) => b.rank - a.rank);
       const fQuestions = this.ranks.find(x => x.rank === this.ranksCount)?.questions;
 
@@ -118,6 +127,8 @@ export class BoardPage implements OnInit, OnDestroy {
 
   use50x50(): void {
     if (!this.usedHelpBy50x50) {
+
+      this.dataService.playAudio(this.AUDIO_TYPE.DIVIDE);
 
       const a = this.question.option_a.isCorrect;
       const b = this.question.option_b.isCorrect;
@@ -150,6 +161,8 @@ export class BoardPage implements OnInit, OnDestroy {
 
   useHallAssistance(): void {
     if (!this.usedHelpByHall) {
+
+      this.dataService.playAudio(this.AUDIO_TYPE.DIVIDE);
 
       const a = this.question.option_a.isCorrect;
       const b = this.question.option_b.isCorrect;
@@ -198,6 +211,8 @@ export class BoardPage implements OnInit, OnDestroy {
   usePhoneCall(): void {
     if (!this.usedHelpByPhone) {
 
+      this.dataService.playAudio(this.AUDIO_TYPE.DIVIDE);
+
       this.selectedAnswer = {
         value: this.getCorrectAnwser()
       }
@@ -209,6 +224,8 @@ export class BoardPage implements OnInit, OnDestroy {
   }
 
   selectedOption(option: IOption, optionKey: string): void {
+    this.optionBackgroundColor(optionKey, this.OPTION_COLOR.YELOW);
+
     this.selectedAnswer = {
       value: optionKey,
       isCorrect: option.isCorrect
@@ -222,6 +239,8 @@ export class BoardPage implements OnInit, OnDestroy {
     if (this.selectedAnswer.isCorrect) {
       this.dataService.playAudio(this.AUDIO_TYPE.WIN);
 
+      this.optionBackgroundColor(this.getCorrectAnwser(), this.OPTION_COLOR.GREEN);
+
       const toast = await this.toastController.create({
         message: this.translate('correct-answer'),
         duration: 2000,
@@ -232,13 +251,11 @@ export class BoardPage implements OnInit, OnDestroy {
 
       toast.present();
 
-      this.optionBackgroundColor(this.getCorrectAnwser(), '#289328');
-
       await toast.onDidDismiss();
 
       this.ranksCount++;
 
-      this.optionBackgroundColor(this.getCorrectAnwser(), 'transparent');
+      this.optionBackgroundColor(this.getCorrectAnwser(), null);
 
       if (this.ranksCount === 16) {
         await this.quizFinished();
@@ -254,7 +271,13 @@ export class BoardPage implements OnInit, OnDestroy {
         value: this.getCorrectAnwser()
       }
 
-      this.quizOver();
+      this.optionBackgroundColor(this.getCorrectAnwser(), this.OPTION_COLOR.GREEN);
+
+      this.dataService.playAudio(this.AUDIO_TYPE.LOSE);
+
+      setTimeout(() => {
+        this.quizOver();
+      }, 3000);
     }
   }
 
@@ -319,8 +342,6 @@ export class BoardPage implements OnInit, OnDestroy {
   async quizOver(): Promise<void> {
     this.onWrongAnswer = true;
 
-    this.dataService.playAudio(this.AUDIO_TYPE.LOSE);
-
     const htmlMessage: string = `
       <div class="text-center">
           <i class="far fa-frown fa-4x"></i> <br>
@@ -348,6 +369,9 @@ export class BoardPage implements OnInit, OnDestroy {
   }
 
   async quizFinished(): Promise<void> {
+
+    this.dataService.playAudio(this.AUDIO_TYPE.FINISHED);
+
     const htmlMessage: string = `
       <div class="text-center">
         <i class="far fa-smile-wink fa-4x"></i> <br>
@@ -427,10 +451,18 @@ export class BoardPage implements OnInit, OnDestroy {
     this.onWrongAnswer = false;
   }
 
+  clearColors() {
+    (document.querySelector('#option_a') as HTMLElement).style.backgroundColor = null;
+    (document.querySelector('#option_b') as HTMLElement).style.backgroundColor = null;
+    (document.querySelector('#option_c') as HTMLElement).style.backgroundColor = null;
+    (document.querySelector('#option_d') as HTMLElement).style.backgroundColor = null;
+  }
+
   goToHome(): void {
     this.backSubscription.unsubscribe();
     this.router.navigate(['home']);
     this.clear();
+    this.clearColors();
   }
 
   translate(key: string): string {
