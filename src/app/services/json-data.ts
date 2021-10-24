@@ -8,22 +8,22 @@ export const JsonData: IRank[] =
             "questions": [
                 {
                     "id": "e1673d94-2eec-4212-9bd0-5da7d56b5093",
-                    "text": "What is the flattest U.S. state?",
+                    "text": "What is the study of landforms called?",
                     "option_a": {
-                        "value": "Florida",
-                        "isCorrect": true
+                        "value": "Geography",
+                        "isCorrect": false
                     },
                     "option_b": {
-                        "value": "Delaware",
+                        "value": "Geodesy",
                         "isCorrect": false
                     },
                     "option_c": {
-                        "value": "Illinois",
+                        "value": "Geology",
                         "isCorrect": false
                     },
                     "option_d": {
-                        "value": "Kansas",
-                        "isCorrect": false
+                        "value": "Geomorphology",
+                        "isCorrect": true
                     }
                 },
                 {
@@ -936,22 +936,22 @@ export const JsonData: IRank[] =
                 },
                 {
                     "id": "50030eab-07f7-4525-b5b5-5f25ce0f1d0c",
-                    "text": "What is the flattest continent?",
+                    "text": "What erupts from a volcano?",
                     "option_a": {
-                        "value": "Australia",
-                        "isCorrect": true
+                        "value": "Steam",
+                        "isCorrect": false
                     },
                     "option_b": {
-                        "value": "Africa",
+                        "value": "Water",
                         "isCorrect": false
                     },
                     "option_c": {
-                        "value": "South America",
+                        "value": "Pieces of rock",
                         "isCorrect": false
                     },
                     "option_d": {
-                        "value": "Europe",
-                        "isCorrect": false
+                        "value": "Lava",
+                        "isCorrect": true
                     }
                 }
             ]
@@ -1174,61 +1174,61 @@ export const JsonData: IRank[] =
             "questions": [
                 {
                     "id": "b00a1a7a-5d8f-452b-a573-414d6f8e3fc6",
-                    "text": "How many people are there in the USA?",
+                    "text": "Where is the Colosseum located?",
                     "option_a": {
-                        "value": "316.7 million",
+                        "value": "In Spain",
                         "isCorrect": false
                     },
                     "option_b": {
-                        "value": "431.1 million",
+                        "value": "In Germany",
                         "isCorrect": false
                     },
                     "option_c": {
-                        "value": "124.2 million",
+                        "value": "In France",
                         "isCorrect": false
                     },
                     "option_d": {
-                        "value": "328.2 million",
+                        "value": "In Italy",
                         "isCorrect": true
                     }
                 },
                 {
                     "id": "38a3387f-ba1e-495a-8d18-94c14547d3c0",
-                    "text": "How many people are there in the Canada?",
+                    "text": "The equator passes through how many countries?",
                     "option_a": {
-                        "value": "36.61 million",
+                        "value": "11",
                         "isCorrect": false
                     },
                     "option_b": {
-                        "value": "27.59 million",
+                        "value": "12",
                         "isCorrect": false
                     },
                     "option_c": {
-                        "value": "37.59 million",
+                        "value": "13",
                         "isCorrect": true
                     },
                     "option_d": {
-                        "value": "328.2 million",
+                        "value": "22",
                         "isCorrect": false
                     }
                 },
                 {
                     "id": "f96a44eb-ba99-471c-b9ef-074b67cfa8a2",
-                    "text": "How many people live in Bosnia and Herzegovina?",
+                    "text": "Which is the largest island in the world?",
                     "option_a": {
-                        "value": "4.61 million",
+                        "value": "New Guinea",
                         "isCorrect": false
                     },
                     "option_b": {
-                        "value": "2.59 million",
+                        "value": "Borneo",
                         "isCorrect": false
                     },
                     "option_c": {
-                        "value": "3.59 million",
+                        "value": "Greenland",
                         "isCorrect": true
                     },
                     "option_d": {
-                        "value": "8.2 million",
+                        "value": "Victoria Island",
                         "isCorrect": false
                     }
                 },

@@ -1,20 +1,13 @@
 <ion-content [fullscreen]="true">
-  <div>
-    <br>
-    <br>
+  <div class="home-content">
 
     <div>
       <img [src]="'assets/images/logo.png'">
     </div>
 
-    <br>
-    <br>
-
     <div class="title">
       <ion-label [innerHTML]="'geo-quiz' | translate"></ion-label>
     </div>
-
-    <br>
 
     <div class="languages">
       <ion-img *ngFor="let item of languages"
@@ -23,14 +16,17 @@
                [src]="item.imgUrl"></ion-img>
     </div>
 
-    <br>
-    <br>
-
     <div>
       <ion-button (click)="start()"
                   color="light"
                   size="large"
                   [translate]="'start'"></ion-button>
     </div>
+
+    <div class="info"
+         (click)="showInfo($event)">
+      <i class="fas fa-info-circle fa-2x"></i>
+    </div>
+
   </div>
 </ion-content>

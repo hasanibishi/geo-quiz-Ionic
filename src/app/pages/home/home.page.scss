@@ -3,37 +3,52 @@
 ion-content {
   text-align: center;
 
-  img {
-    width: 45%;
-    box-shadow: 0px 0px 4px 6px $secondaryColor;
-    border-radius: 50%;
-  }
-
-  .title {
-    font-size: 2em;
-    font-weight: 700;
-    color: $secondaryColor;
-  }
-
-  .languages {
+  .home-content {
     display: grid;
-    grid-template-columns: 1fr 1fr;
     justify-items: center;
+    align-items: center;
+    height: 100%;
+    grid-template-rows: 40% 15% 15% 15% 15%;
 
-    ion-img {
-      width: 70px !important;
-      border-radius: 50% !important;
+    img {
+      width: 45%;
+      box-shadow: 0px 0px 4px 6px $secondaryColor;
+      border-radius: 50%;
+    }
+
+    .title {
+      font-size: 2em;
+      font-weight: 700;
+      color: $secondaryColor;
+    }
+
+    .languages {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      justify-items: center;
+      width: 100%;
+
+      ion-img {
+        width: 70px !important;
+        border-radius: 50% !important;
+        overflow: hidden;
+      }
+
+      .selectedLanguage {
+        box-shadow: 0px 0px 6px 6px $secondaryColor;
+      }
+    }
+
+    ion-button {
+      letter-spacing: 4px;
+      border-radius: 30px;
       overflow: hidden;
     }
 
-    .selectedLanguage {
-      box-shadow: 0px 0px 6px 6px $secondaryColor;
+    .info {
+      color: #f4f5f8;
+      width: 100px;
+      margin: auto;
     }
-  }
-
-  ion-button {
-    letter-spacing: 4px;
-    border-radius: 30px;
-    overflow: hidden;
   }
 }

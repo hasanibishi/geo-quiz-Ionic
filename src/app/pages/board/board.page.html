@@ -1,101 +1,103 @@
 <ion-content>
-  <div class="backBtn">
-    <div (click)="leaveQuiz()">
-      <i class="fas fa-arrow-left"></i>
-      <i class="fas fa-running"></i>
-    </div>
-  </div>
-
-  <div class="board">
-    <div>
-      <div class="header">
-        <div>
-          <div class="text-center">
-            <div class="help">
-              <div [ngClass]="{helpUsed : usedHelpBy50x50}"
-                   (click)="use50x50()">
-                <i *ngIf="usedHelpBy50x50"
-                   class="fas fa-slash noneIcon"></i>
-                <!-- <span>50x50</span> -->
-                <i class="fas fa-divide"></i>
-              </div>
-
-              <div [ngClass]="{helpUsed : usedHelpByPhone}"
-                   (click)="usePhoneCall()">
-                <i *ngIf="usedHelpByPhone"
-                   class="fas fa-slash noneIcon"></i>
-                <i class="fas fa-phone"></i>
-              </div>
-
-              <div [ngClass]="{helpUsed : usedHelpByHall}"
-                   (click)="useHallAssistance()">
-                <i *ngIf="usedHelpByHall"
-                   class="fas fa-slash noneIcon"></i>
-                <i class="fas fa-users"></i>
-              </div>
-
-              <div [ngClass]="{helpUsed : usedChangingQuestion}"
-                   (click)="changeQuestion()">
-                <i *ngIf="usedChangingQuestion"
-                   class="fas fa-slash noneIcon"></i>
-                <i class="fas fa-sync"></i>
-              </div>
-            </div>
-
-            <br>
-
-            <div>
-              <img src="assets/images/logo.png">
-            </div>
-          </div>
-
-        </div>
-
-        <div class="right-side">
-          <div *ngFor="let item of ranks; let first = first"
-               class="ranks"
-               [ngClass]="{selectedRank: item.rank === ranksCount}">
-            <div>
-              <span>{{item.rank}}</span>
-            </div>
-            <div>
-              <span *ngIf="first">€1 MILLION</span>
-              <span *ngIf="item.value">€{{item.value | number: '2.'}}</span>
-            </div>
-
-          </div>
-        </div>
+  <div class="board-content">
+    <div class="backBtn">
+      <div (click)="leaveQuiz()">
+        <i class="fas fa-arrow-left"></i>
+        <i class="fas fa-running"></i>
       </div>
+    </div>
 
-      <div class="body">
-        <hr class="bg-white">
+    <div class="board">
+      <div>
+        <div class="header">
+          <div>
+            <div class="text-center">
+              <div class="help">
+                <div [ngClass]="{helpUsed : usedHelpBy50x50}"
+                     (click)="use50x50()">
+                  <i *ngIf="usedHelpBy50x50"
+                     class="fas fa-slash noneIcon"></i>
+                  <!-- <span>50x50</span> -->
+                  <i class="fas fa-divide"></i>
+                </div>
 
-        <div class="question">
-          <span>
-            {{question?.text}}
-          </span>
+                <div [ngClass]="{helpUsed : usedHelpByPhone}"
+                     (click)="usePhoneCall()">
+                  <i *ngIf="usedHelpByPhone"
+                     class="fas fa-slash noneIcon"></i>
+                  <i class="fas fa-phone"></i>
+                </div>
+
+                <div [ngClass]="{helpUsed : usedHelpByHall}"
+                     (click)="useHallAssistance()">
+                  <i *ngIf="usedHelpByHall"
+                     class="fas fa-slash noneIcon"></i>
+                  <i class="fas fa-users"></i>
+                </div>
+
+                <div [ngClass]="{helpUsed : usedChangingQuestion}"
+                     (click)="changeQuestion()">
+                  <i *ngIf="usedChangingQuestion"
+                     class="fas fa-slash noneIcon"></i>
+                  <i class="fas fa-sync"></i>
+                </div>
+              </div>
+
+              <br>
+
+              <div>
+                <img src="assets/images/logo.png">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="right-side">
+            <div *ngFor="let item of ranks; let first = first"
+                 class="ranks"
+                 [ngClass]="{selectedRank: item.rank === ranksCount}">
+              <div>
+                <span>{{item.rank}}</span>
+              </div>
+              <div>
+                <span *ngIf="first">€1 MILLION</span>
+                <span *ngIf="item.value">€{{item.value | number: '2.'}}</span>
+              </div>
+
+            </div>
+          </div>
         </div>
 
-        <div class="options">
-          <div (click)="selectedOption(question.option_a, 'A')"
-               id="option_a">
-            <span>A:</span>
-            <span>{{question?.option_a?.value}}</span>
+        <div class="body">
+          <hr class="bg-white">
+
+          <div class="question">
+            <span>
+              {{question?.text}}
+            </span>
           </div>
-          <div (click)="selectedOption(question.option_b, 'B')"
-               id="option_b">
-            <span>B:</span>
-            <span>{{question?.option_b?.value}}</span>
-          </div>
-          <div (click)="selectedOption(question.option_c, 'C')"
-               id="option_c">
-            <span>C:</span>
-            <span>{{question?.option_c?.value}}</span>
-          </div>
-          <div (click)="selectedOption(question.option_d, 'D')"
-               id="option_d">
-            <span>D:</span>
-            <span>{{question?.option_d?.value}}</span>
+
+          <div class="options">
+            <div (click)="selectedOption(question.option_a, 'A')"
+                 id="option_a">
+              <span>A:</span>
+              <span>{{question?.option_a?.value}}</span>
+            </div>
+            <div (click)="selectedOption(question.option_b, 'B')"
+                 id="option_b">
+              <span>B:</span>
+              <span>{{question?.option_b?.value}}</span>
+            </div>
+            <div (click)="selectedOption(question.option_c, 'C')"
+                 id="option_c">
+              <span>C:</span>
+              <span>{{question?.option_c?.value}}</span>
+            </div>
+            <div (click)="selectedOption(question.option_d, 'D')"
+                 id="option_d">
+              <span>D:</span>
+              <span>{{question?.option_d?.value}}</span>
+            </div>
           </div>
         </div>
       </div>

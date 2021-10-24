@@ -11,6 +11,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HomePage } from './pages/home/home.page';
 import { BoardPage } from './pages/board/board.page';
+import { InfoPage } from './pages/info/info.page';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -21,7 +22,8 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     AppComponent,
     HomePage,
-    BoardPage
+    BoardPage,
+    InfoPage
   ],
   entryComponents: [],
   imports: [

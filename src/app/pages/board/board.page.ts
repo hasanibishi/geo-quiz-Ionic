@@ -20,7 +20,7 @@ export class BoardPage implements OnInit, OnDestroy {
 
   question: IQuestion;
   ranks: IRank[] = [];
-  ranksCount: number = 15;
+  ranksCount: number = 1;
   currentEarnedValue: number;
   hallAssistance: IHallAssistance;
   selectedAnswer: IOption;
@@ -35,7 +35,9 @@ export class BoardPage implements OnInit, OnDestroy {
   AUDIO_TYPE = AudioType;
   OPTION_COLOR = OptionColor;
 
-  backSubscription: Subscription;
+  backButtonSubscription: Subscription;
+
+  backButtonOnDelaySubscription: Subscription;
 
   constructor(
     private dataService: DataService,
@@ -45,7 +47,7 @@ export class BoardPage implements OnInit, OnDestroy {
     private platform: Platform,
     private translateService: TranslateService
   ) {
-    this.backSubscription = this.platform.backButton.subscribeWithPriority(1, async () => {
+    this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(1, async () => {
       const element = await this.alertController.getTop();
 
       if (element) {
@@ -55,7 +57,7 @@ export class BoardPage implements OnInit, OnDestroy {
         }
         else {
           element.dismiss();
-          this.clearColors();
+          this.clearInjectedStyle();
           return;
         }
       }
@@ -80,7 +82,7 @@ export class BoardPage implements OnInit, OnDestroy {
       buttons: [
         {
           text: this.translate('no'),
-          handler: () => this.clearColors()
+          handler: () => this.clearInjectedStyle()
         }, {
           text: this.translate('yes'),
           handler: () => this.checkAnswer()
@@ -92,7 +94,7 @@ export class BoardPage implements OnInit, OnDestroy {
   }
 
   getQuestions(): void {
-    this.clearColors();
+    this.clearInjectedStyle();
 
     this.ranks = this.dataService.getData().sort((a, b) => b.rank - a.rank);
 
@@ -237,6 +239,11 @@ export class BoardPage implements OnInit, OnDestroy {
   async checkAnswer(): Promise<void> {
 
     if (this.selectedAnswer.isCorrect) {
+
+      this.lockScreen(true);
+
+      this.backButtonOnDelaySubscription = this.platform.backButton.subscribeWithPriority(9999, () => { });
+
       this.dataService.playAudio(this.AUDIO_TYPE.WIN);
 
       this.optionBackgroundColor(this.getCorrectAnwser(), this.OPTION_COLOR.GREEN);
@@ -267,13 +274,17 @@ export class BoardPage implements OnInit, OnDestroy {
     }
 
     else {
-      this.selectedAnswer = {
-        value: this.getCorrectAnwser()
-      }
+      this.lockScreen(true);
+
+      this.backButtonOnDelaySubscription = this.platform.backButton.subscribeWithPriority(9999, () => { });
+
+      this.dataService.playAudio(this.AUDIO_TYPE.LOSE);
 
       this.optionBackgroundColor(this.getCorrectAnwser(), this.OPTION_COLOR.GREEN);
 
-      this.dataService.playAudio(this.AUDIO_TYPE.LOSE);
+      this.selectedAnswer = {
+        value: this.getCorrectAnwser()
+      }
 
       setTimeout(() => {
         this.quizOver();
@@ -449,20 +460,34 @@ export class BoardPage implements OnInit, OnDestroy {
     this.usedHelpByPhone = false;
     this.usedHelpByHall = false;
     this.onWrongAnswer = false;
+
+    if (this.backButtonSubscription)
+      this.backButtonSubscription.unsubscribe();
+
+    if (this.backButtonOnDelaySubscription)
+      this.backButtonOnDelaySubscription.unsubscribe();
   }
 
-  clearColors() {
+  clearInjectedStyle(): void {
     (document.querySelector('#option_a') as HTMLElement).style.backgroundColor = null;
     (document.querySelector('#option_b') as HTMLElement).style.backgroundColor = null;
     (document.querySelector('#option_c') as HTMLElement).style.backgroundColor = null;
     (document.querySelector('#option_d') as HTMLElement).style.backgroundColor = null;
+
+    this.lockScreen(false);
+
+    if (this.backButtonOnDelaySubscription)
+      this.backButtonOnDelaySubscription.unsubscribe();
+  }
+
+  lockScreen(status: boolean) {
+    (document.querySelector('.board-content') as HTMLElement).style.pointerEvents = status ? 'none' : 'all';
   }
 
   goToHome(): void {
-    this.backSubscription.unsubscribe();
     this.router.navigate(['home']);
     this.clear();
-    this.clearColors();
+    this.clearInjectedStyle();
   }
 
   translate(key: string): string {
@@ -470,6 +495,6 @@ export class BoardPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.backSubscription.unsubscribe();
+    this.clear();
   }
 }

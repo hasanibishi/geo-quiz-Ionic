@@ -2,12 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ILanguage } from 'src/app/models/language.model';
-import { Platform } from '@ionic/angular';
+import { Platform, PopoverController } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { Subscription } from 'rxjs';
 import { Storage } from '@ionic/storage-angular';
 import { AudioType } from 'src/app/models/audio.enum';
 import { DataService } from 'src/app/services/data.service';
+import { InfoPage } from '../info/info.page';
 
 const LNG_KEY: string = 'LNG_KEY';
 
@@ -24,7 +25,7 @@ export class HomePage implements OnInit, OnDestroy {
     { key: 'en', imgUrl: 'assets/images/en.jpg' }
   ];
 
-  backSubscription: Subscription;
+  backButtonSubscription: Subscription;
 
   AUDIO_TYPE = AudioType;
 
@@ -33,9 +34,10 @@ export class HomePage implements OnInit, OnDestroy {
     private router: Router,
     private platform: Platform,
     private storage: Storage,
-    private dataService: DataService
+    private dataService: DataService,
+    private popoverController: PopoverController
   ) {
-    this.backSubscription = this.platform.backButton.subscribeWithPriority(0, () => App.exitApp());
+    this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(0, () => App.exitApp());
   }
 
   async ngOnInit() {
@@ -58,7 +60,21 @@ export class HomePage implements OnInit, OnDestroy {
     this.storage.set(LNG_KEY, key);
   }
 
+  async showInfo(event: Event) {
+    const popover = await this.popoverController.create({
+      component: InfoPage,
+      componentProps: {
+        btnClose: () => {
+          popover.dismiss();
+        },
+      },
+      event: event
+    });
+
+    await popover.present();
+  }
+
   ngOnDestroy() {
-    this.backSubscription.unsubscribe();
+    this.backButtonSubscription.unsubscribe();
   }
 }
