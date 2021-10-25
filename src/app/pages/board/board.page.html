@@ -13,32 +13,23 @@
           <div>
             <div class="text-center">
               <div class="help">
-                <div [ngClass]="{helpUsed : usedHelpBy50x50}"
+                <div [style.opacity]="usedHelpBy50x50 ? '0.2' : 'inherit'"
                      (click)="use50x50()">
-                  <i *ngIf="usedHelpBy50x50"
-                     class="fas fa-slash noneIcon"></i>
-                  <!-- <span>50x50</span> -->
                   <i class="fas fa-divide"></i>
                 </div>
 
-                <div [ngClass]="{helpUsed : usedHelpByPhone}"
+                <div [style.opacity]="usedHelpByPhone ? '0.2' : 'inherit'"
                      (click)="usePhoneCall()">
-                  <i *ngIf="usedHelpByPhone"
-                     class="fas fa-slash noneIcon"></i>
                   <i class="fas fa-phone"></i>
                 </div>
 
-                <div [ngClass]="{helpUsed : usedHelpByHall}"
+                <div [style.opacity]="usedHelpByHall ? '0.2' : 'inherit'"
                      (click)="useHallAssistance()">
-                  <i *ngIf="usedHelpByHall"
-                     class="fas fa-slash noneIcon"></i>
                   <i class="fas fa-users"></i>
                 </div>
 
-                <div [ngClass]="{helpUsed : usedChangingQuestion}"
+                <div [style.opacity]="usedChangingQuestion ? '0.2' : 'inherit'"
                      (click)="changeQuestion()">
-                  <i *ngIf="usedChangingQuestion"
-                     class="fas fa-slash noneIcon"></i>
                   <i class="fas fa-sync"></i>
                 </div>
               </div>
