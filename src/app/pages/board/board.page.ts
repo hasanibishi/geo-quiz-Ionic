@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, Platform, ToastController } from '@ionic/angular';
+import { AlertController, Platform, PopoverController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { AudioType } from 'src/app/models/audio.enum';
@@ -10,6 +10,8 @@ import { IQuestion } from 'src/app/models/question.model';
 import { IRank } from 'src/app/models/rank.model';
 import { DataService } from 'src/app/services/data.service';
 import { OptionColor } from 'src/app/models/option-color.enum';
+import { ConfirmPage } from '../confirm/confirm.page';
+import { IConfirm } from 'src/app/models/confirm.model';
 
 @Component({
   selector: 'app-board',
@@ -45,7 +47,8 @@ export class BoardPage implements OnInit, OnDestroy {
     private alertController: AlertController,
     private toastController: ToastController,
     private platform: Platform,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private popoverController: PopoverController
   ) {
     this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(1, async () => {
       const element = await this.alertController.getTop();
@@ -75,22 +78,32 @@ export class BoardPage implements OnInit, OnDestroy {
   async checkQuestion(): Promise<void> {
     this.dataService.playAudio(this.AUDIO_TYPE.FINAL_ANSWER);
 
-    const alert = await this.alertController.create({
+    const params: IConfirm = {
+      btnClose: () => {
+        popover.dismiss();
+        this.clearInjectedStyle();
+      },
+      btnConfirm: () => {
+        popover.dismiss();
+        this.checkAnswer();
+      },
       header: this.translate('confirm'),
       message: this.translate('is-this-your-final-answer'),
-      backdropDismiss: false,
-      buttons: [
-        {
-          text: this.translate('no'),
-          handler: () => this.clearInjectedStyle()
-        }, {
-          text: this.translate('yes'),
-          handler: () => this.checkAnswer()
-        }
-      ]
+      buttonLabels: {
+        btnClose: this.translate('no'),
+        btnConfirm: this.translate('yes')
+      }
+    }
+
+    const popover = await this.popoverController.create({
+      component: ConfirmPage,
+      componentProps: {
+        params: params
+      },
+      backdropDismiss: false
     });
 
-    await alert.present();
+    await popover.present();
   }
 
   getQuestions(): void {
@@ -293,19 +306,26 @@ export class BoardPage implements OnInit, OnDestroy {
   }
 
   async helpByPhone(): Promise<void> {
-    const htmlMessage: string = `
-      <div class="text-center">
-        ${this.translate('your-friend-says')}: <br> <i>"${this.translate('i-think-the-correct-answer-is')} <b>${this.selectedAnswer.value}</b>"</i>
-      </div>`;
-
-    const alert = await this.alertController.create({
+    const params: IConfirm = {
+      btnClose: () => {
+        popover.dismiss();
+      },
       header: `${this.translate('calling')}...`,
-      message: htmlMessage,
-      backdropDismiss: false,
-      buttons: [this.translate('okay-thank-you')]
+      message: `${this.translate('your-friend-says')}: ${this.translate('i-think-the-correct-answer-is')} ${this.selectedAnswer.value}`,
+      buttonLabels: {
+        btnClose: this.translate('okay-thank-you')
+      }
+    }
+
+    const popover = await this.popoverController.create({
+      component: ConfirmPage,
+      componentProps: {
+        params: params
+      },
+      backdropDismiss: false
     });
 
-    await alert.present();
+    await popover.present();
   }
 
   async helpByHallAssistance(): Promise<void> {
@@ -362,21 +382,33 @@ export class BoardPage implements OnInit, OnDestroy {
           ${this.translate('do-you-want-to-play-again')}
       </div>`;
 
-    const alert = await this.alertController.create({
-      message: htmlMessage,
-      backdropDismiss: false,
-      buttons: [
-        {
-          text: this.translate('no'),
-          handler: () => this.goToHome()
-        }, {
-          text: this.translate('yes'),
-          handler: () => this.resetQuiz()
-        }
-      ]
+    const params: IConfirm = {
+      btnClose: () => {
+        popover.dismiss();
+        this.goToHome();
+      },
+      btnConfirm: () => {
+        popover.dismiss();
+        this.resetQuiz()
+      },
+      header: '',
+      message: this.translate('is-this-your-final-answer'),
+      htmlTemplate: htmlMessage,
+      buttonLabels: {
+        btnClose: this.translate('no'),
+        btnConfirm: this.translate('yes')
+      }
+    }
+
+    const popover = await this.popoverController.create({
+      component: ConfirmPage,
+      componentProps: {
+        params: params
+      },
+      backdropDismiss: false
     });
 
-    await alert.present();
+    await popover.present();
   }
 
   async quizFinished(): Promise<void> {
@@ -410,21 +442,32 @@ export class BoardPage implements OnInit, OnDestroy {
   }
 
   async leaveQuiz(): Promise<void> {
-    const alert = await this.alertController.create({
+
+    const params: IConfirm = {
+      btnClose: () => {
+        popover.dismiss();
+      },
+      btnConfirm: () => {
+        popover.dismiss();
+        this.goToHome();
+      },
       header: this.translate('confirm'),
       message: this.translate('are-you-sure-to-leave-the-quiz'),
-      backdropDismiss: false,
-      buttons: [
-        {
-          text: this.translate('no'),
-        }, {
-          text: this.translate('yes'),
-          handler: () => this.goToHome()
-        }
-      ]
+      buttonLabels: {
+        btnClose: this.translate('no'),
+        btnConfirm: this.translate('yes')
+      }
+    }
+
+    const popover = await this.popoverController.create({
+      component: ConfirmPage,
+      componentProps: {
+        params: params
+      },
+      backdropDismiss: false
     });
 
-    await alert.present();
+    await popover.present();
   }
 
   getCorrectAnwser(): string {

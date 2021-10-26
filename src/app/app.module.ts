@@ -13,6 +13,7 @@ import { HomePage } from './pages/home/home.page';
 import { BoardPage } from './pages/board/board.page';
 import { InfoPage } from './pages/info/info.page';
 import { IonicStorageModule } from '@ionic/storage-angular';
+import { ConfirmPage } from './pages/confirm/confirm.page';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -23,7 +24,8 @@ export function createTranslateLoader(http: HttpClient) {
     AppComponent,
     HomePage,
     BoardPage,
-    InfoPage
+    InfoPage,
+    ConfirmPage
   ],
   entryComponents: [],
   imports: [

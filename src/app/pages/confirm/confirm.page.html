@@ -1,0 +1,27 @@
+<div class="confirm-content">
+    <span class="header">{{params.header}}</span>
+
+    <div *ngIf="!params?.htmlTemplate">
+        <br>
+
+        <span>{{params.message}}</span>
+
+        <br>
+        <br>
+    </div>
+
+    <div *ngIf="params?.htmlTemplate">
+        <br>
+        <div [innerHTML]="params.htmlTemplate"> </div>
+        <br>
+    </div>
+
+    <div class="text-right">
+        <ion-button color="light"
+                    (click)="close()">{{params.buttonLabels.btnClose}}</ion-button>
+
+        <ion-button *ngIf="params.buttonLabels?.btnConfirm"
+                    color="light"
+                    (click)="confirm()">{{params.buttonLabels.btnConfirm}}</ion-button>
+    </div>
+</div>
