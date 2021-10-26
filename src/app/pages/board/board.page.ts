@@ -44,14 +44,13 @@ export class BoardPage implements OnInit, OnDestroy {
   constructor(
     private dataService: DataService,
     private router: Router,
-    private alertController: AlertController,
     private toastController: ToastController,
     private platform: Platform,
     private translateService: TranslateService,
     private popoverController: PopoverController
   ) {
     this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(1, async () => {
-      const element = await this.alertController.getTop();
+      const element = await this.popoverController.getTop();
 
       if (element) {
         if (this.onWrongAnswer) {
@@ -333,41 +332,47 @@ export class BoardPage implements OnInit, OnDestroy {
       <div class="helpByHallAssistance">
         <div>
           <span>${this.hallAssistance?.percent_a}%</span>
-          <span id="a"></span>
+          <span id="a" style="height: ${this.hallAssistance?.percent_a}%"></span>
           <span class="text-center">A</span>
         </div>
         <div>
           <span>${this.hallAssistance?.percent_b}%</span>
-          <span id="b"></span>
+          <span id="b" style="height: ${this.hallAssistance?.percent_b}%"></span>
           <span class="text-center">B</span>
         </div>
         <div>
           <span>${this.hallAssistance?.percent_c}%</span>
-          <span id="c"></span>
+          <span id="c" style="height: ${this.hallAssistance?.percent_c}%"></span>
           <span class="text-center">C</span>
         </div>
         <div>
           <span>${this.hallAssistance?.percent_d}%</span>
-          <span id="d"></span>
+          <span id="d" style="height: ${this.hallAssistance?.percent_d}%"></span>
           <span class="text-center">D</span>
         </div>
       </div>`;
 
-    const alert = await this.alertController.create({
+    const params: IConfirm = {
+      btnClose: () => {
+        popover.dismiss();
+      },
       header: this.translate('hall-assistance'),
-      message: htmlMessage,
-      backdropDismiss: false,
-      buttons: [this.translate('okay-thank-you')]
+      message: '',
+      htmlTemplate: htmlMessage,
+      buttonLabels: {
+        btnClose: this.translate('okay-thank-you')
+      }
+    }
+
+    const popover = await this.popoverController.create({
+      component: ConfirmPage,
+      componentProps: {
+        params: params
+      },
+      backdropDismiss: false
     });
 
-    await alert.present();
-
-    setTimeout(() => {
-      (document.querySelector('#a') as HTMLElement).style.height = `${this.hallAssistance?.percent_a}%`;
-      (document.querySelector('#b') as HTMLElement).style.height = `${this.hallAssistance?.percent_b}%`;
-      (document.querySelector('#c') as HTMLElement).style.height = `${this.hallAssistance?.percent_c}%`;
-      (document.querySelector('#d') as HTMLElement).style.height = `${this.hallAssistance?.percent_d}%`;
-    }, 1000);
+    await popover.present();
   }
 
   async quizOver(): Promise<void> {
@@ -392,7 +397,7 @@ export class BoardPage implements OnInit, OnDestroy {
         this.resetQuiz()
       },
       header: '',
-      message: this.translate('is-this-your-final-answer'),
+      message: '',
       htmlTemplate: htmlMessage,
       buttonLabels: {
         btnClose: this.translate('no'),
@@ -424,21 +429,33 @@ export class BoardPage implements OnInit, OnDestroy {
         ${this.translate('do-you-want-to-play-again')}
       </div>`;
 
-    const alert = await this.alertController.create({
-      message: htmlMessage,
-      backdropDismiss: false,
-      buttons: [
-        {
-          text: this.translate('no'),
-          handler: () => this.goToHome()
-        }, {
-          text: this.translate('yes'),
-          handler: () => this.resetQuiz()
-        }
-      ]
+    const params: IConfirm = {
+      btnClose: () => {
+        popover.dismiss();
+        this.goToHome();
+      },
+      btnConfirm: () => {
+        popover.dismiss();
+        this.resetQuiz()
+      },
+      header: '',
+      message: '',
+      htmlTemplate: htmlMessage,
+      buttonLabels: {
+        btnClose: this.translate('no'),
+        btnConfirm: this.translate('yes')
+      }
+    }
+
+    const popover = await this.popoverController.create({
+      component: ConfirmPage,
+      componentProps: {
+        params: params
+      },
+      backdropDismiss: false
     });
 
-    await alert.present();
+    await popover.present();
   }
 
   async leaveQuiz(): Promise<void> {
