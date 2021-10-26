@@ -780,7 +780,7 @@ export const JsonData: IRank[] =
                         "isCorrect": true
                     },
                     "option_c": {
-                        "value": "Himalayas",
+                        "value": "Mount Fuji",
                         "isCorrect": false
                     },
                     "option_d": {
