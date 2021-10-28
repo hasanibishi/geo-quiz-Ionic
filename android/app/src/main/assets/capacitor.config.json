@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.geo.quiz",
+	"appName": "Geo Quiz",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
