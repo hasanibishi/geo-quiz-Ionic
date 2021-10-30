@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package io.ionic.geo.quiz;
 
 import com.getcapacitor.BridgeActivity;
 
